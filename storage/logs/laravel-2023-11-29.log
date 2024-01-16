@@ -1,0 +1,1 @@
+[2023-11-29 11:33:07] local.EMERGENCY: File:/home/u1603498/public_html/erp.simetrisdigitalagency.com/vendor/spatie/laravel-permission/src/Exceptions/PermissionAlreadyExists.phpLine:11Message:A `supplier.view_own` permission already exists for guard `web`.  
