@@ -8,13 +8,3 @@
 Homestead.json
 Homestead.yaml
 npm-debug.log
-
-
-/public/css/
-/public/fonts/
-/public/images/
-/public/modules/
-/public/mix-manifest.json
-.scribe
-/public/docs
-/public/js/skins/
