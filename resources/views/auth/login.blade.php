@@ -61,9 +61,9 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-flat btn-login">@lang('lang_v1.login')</button>
                 @if(config('app.env') != 'demo')
-                {{-- <a href="{{ route('password.request') }}" class="pull-right">
+                <a href="{{ route('password.request') }}" class="pull-right">
                     @lang('lang_v1.forgot_your_password')
-                </a> --}}
+                </a>
             @endif
             </div>
         </form>
