@@ -14,7 +14,7 @@ return [
     'add_role' => 'Tambah Wewenang',
     'edit_role' => 'Edit Wewenang',
     'user' => 'Pengguna',
-    'supplier' => 'Pemasok',
+    'supplier' => 'Supplier',
     'customer' => 'Pelanggan',
     'purchase' => 'Pembelian & Penyesuaian Stok',
     'report' => 'Laporan',
@@ -24,10 +24,10 @@ return [
     'user.update' => 'Edit pengguna',
     'user.delete' => 'Hapus pengguna',
 
-    'supplier.view' => 'Lihat pemasok',
-    'supplier.create' => 'Tambah pemasok',
-    'supplier.update' => 'Edit pemasok',
-    'supplier.delete' => 'Hapus pemasok',
+    'supplier.view' => 'Lihat Supplier',
+    'supplier.create' => 'Tambah Supplier',
+    'supplier.update' => 'Edit Supplier',
+    'supplier.delete' => 'Hapus Supplier',
 
     'customer.view' => 'Lihat pelanggan',
     'customer.create' => 'Tambah pelanggan',
@@ -50,7 +50,7 @@ return [
     'sell.delete' => 'Hapus penjualan POS',
 
     'purchase_n_sell_report.view' => 'Lihat laporan pembelian & penjualan',
-    'contacts_report.view' => 'Lihat laporan Pemasok & Pelanggan',
+    'contacts_report.view' => 'Lihat laporan Supplier & Pelanggan',
     'stock_report.view' => 'Lihat laporan stok, laporan penyesuaian stok & laporan stok kedaluwarsa',
     'tax_report.view' => 'Lihat laporan pajak',
     'trending_product_report.view' => 'Lihat laporan produk terlaris',

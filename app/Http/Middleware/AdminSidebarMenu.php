@@ -63,44 +63,89 @@ class AdminSidebarMenu
             }
 
             //Contacts dropdown
-            if (auth()->user()->can('supplier.view') || auth()->user()->can('customer.view') || auth()->user()->can('supplier.view_own') || auth()->user()->can('customer.view_own')) {
+            if (
+                auth()->user()->can('supplier.view') || 
+                auth()->user()->can('customer.view') || 
+                auth()->user()->can('supplier.view_own') || 
+                auth()->user()->can('customer.view_own') ||
+                auth()->user()->can('business_settings.access' ||
+                auth()->user()->can('product.create'))
+                ) {
                 $menu->dropdown(
                     __('contact.contacts'),
                     function ($sub) {
-                        if (auth()->user()->can('supplier.view') || auth()->user()->can('supplier.view_own')) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ContactController::class, 'index'], ['type' => 'supplier']),
-                                __('report.supplier'),
-                                ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'supplier']
-                            );
-                        }
-                        if (auth()->user()->can('customer.view') || auth()->user()->can('customer.view_own')) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ContactController::class, 'index'], ['type' => 'customer']),
-                                __('report.customer'),
-                                ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'customer']
-                            );
-                            $sub->url(
-                                action([\App\Http\Controllers\CustomerGroupController::class, 'index']),
-                                __('lang_v1.customer_groups'),
-                                ['icon' => 'fa fas fa-users', 'active' => request()->segment(1) == 'customer-group']
-                            );
-                        }
-                        if (auth()->user()->can('supplier.create') || auth()->user()->can('customer.create')) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ContactController::class, 'getImportContacts']),
-                                __('lang_v1.import_contacts'),
-                                ['icon' => 'fa fas fa-download', 'active' => request()->segment(1) == 'contacts' && request()->segment(2) == 'import']
-                            );
-                        }
+                        //submenu master kontak
+                        $sub->dropdown(
+                            ('Master Kontak'),
+                            function ($subMenus) {
+                                if (auth()->user()->can('supplier.view') || auth()->user()->can('supplier.view_own')) {
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\ContactController::class, 'index'], ['type' => 'supplier']),
+                                        __('report.supplier'),
+                                        ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'supplier']
+                                    );
+                                }
+                                if (auth()->user()->can('customer.view') || auth()->user()->can('customer.view_own')) {
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\ContactController::class, 'index'], ['type' => 'customer']),
+                                        __('report.customer'),
+                                        ['icon' => 'fa fas fa-star', 'active' => request()->input('type') == 'customer']
+                                    );
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\CustomerGroupController::class, 'index']),
+                                        __('lang_v1.customer_groups'),
+                                        ['icon' => 'fa fas fa-users', 'active' => request()->segment(1) == 'customer-group']
+                                    );
+                                }
+                                if (auth()->user()->can('supplier.create') || auth()->user()->can('customer.create')) {
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\ContactController::class, 'getImportContacts']),
+                                        __('lang_v1.import_contacts'),
+                                        ['icon' => 'fa fas fa-download', 'active' => request()->segment(1) == 'contacts' && request()->segment(2) == 'import']
+                                    );
+                                }
+        
+                                if (auth()->user()->can('business_settings.access')) {
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\BusinessLocationController::class, 'index']),
+                                        __('business.business_locations'),
+                                        ['icon' => 'fa fas fa-map-marker', 'active' => request()->segment(1) == 'business-location']
+                                    );
+                                }
+        
+                                if (! empty(env('GOOGLE_MAP_API_KEY'))) {
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\ContactController::class, 'contactMap']),
+                                        __('lang_v1.map'),
+                                        ['icon' => 'fa fas fa-map-marker-alt', 'active' => request()->segment(1) == 'contacts' && request()->segment(2) == 'map']
+                                    );
+                                }
+                            }
+                        );
 
-                        if (! empty(env('GOOGLE_MAP_API_KEY'))) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ContactController::class, 'contactMap']),
-                                __('lang_v1.map'),
-                                ['icon' => 'fa fas fa-map-marker-alt', 'active' => request()->segment(1) == 'contacts' && request()->segment(2) == 'map']
-                            );
-                        }
+                        //submenu master produk
+                        $sub->dropdown(
+                            ('Master Produk'),
+                            function ($subMenus) {
+                                if (auth()->user()->can('product.view')) {
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\ProductController::class, 'index']),
+                                        __('lang_v1.list_products'),
+                                        ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'products' && request()->segment(2) == '']
+                                    );
+                                }
+                                
+        
+                                if (auth()->user()->can('product.create')) {
+                                    $subMenus->url(
+                                        action([\App\Http\Controllers\ProductController::class, 'create']),
+                                        __('product.add_product'),
+                                        ['icon' => 'fa fas fa-plus-circle', 'active' => request()->segment(1) == 'products' && request()->segment(2) == 'create']
+                                    );
+                                }
+                            }
+                        );
+                        
                     },
                     ['icon' => 'fa fas fa-address-book', 'id' => 'tour_step4']
                 )->order(15);
@@ -114,22 +159,7 @@ class AdminSidebarMenu
                 $menu->dropdown(
                     __('sale.products'),
                     function ($sub) {
-                        if (auth()->user()->can('product.view')) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ProductController::class, 'index']),
-                                __('lang_v1.list_products'),
-                                ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'products' && request()->segment(2) == '']
-                            );
-                        }
                         
-
-                        if (auth()->user()->can('product.create')) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ProductController::class, 'create']),
-                                __('product.add_product'),
-                                ['icon' => 'fa fas fa-plus-circle', 'active' => request()->segment(1) == 'products' && request()->segment(2) == 'create']
-                            );
-                        }
                         if (auth()->user()->can('product.create')) {
                             $sub->url(
                                 action([\App\Http\Controllers\SellingPriceGroupController::class, 'updateProductPrice']),
@@ -203,7 +233,10 @@ class AdminSidebarMenu
             }
 
             //Purchase dropdown
-            if (in_array('purchases', $enabled_modules) && (auth()->user()->can('purchase.view') || auth()->user()->can('purchase.create') || auth()->user()->can('purchase.update'))) {
+            if (in_array('purchases', $enabled_modules) && (auth()->user()->can('purchase.view') || 
+            auth()->user()->can('purchase.create') || 
+            auth()->user()->can('purchase.update') ||
+            auth()->user()->can('purchase_n_sell_report.view'))) {
                 $menu->dropdown(
                     __('purchase.purchases'),
                     function ($sub) use ($common_settings) {
@@ -241,6 +274,20 @@ class AdminSidebarMenu
                                 action([\App\Http\Controllers\PurchaseReturnController::class, 'index']),
                                 __('lang_v1.list_purchase_return'),
                                 ['icon' => 'fa fas fa-undo', 'active' => request()->segment(1) == 'purchase-return']
+                            );
+                        }
+                        if (auth()->user()->can('purchase_n_sell_report.view')) {
+                            
+                            $sub->url(
+                                action([\App\Http\Controllers\ReportController::class, 'getproductPurchaseReport']),
+                                __('lang_v1.product_purchase_report'),
+                                ['icon' => 'fa fas fa-arrow-circle-down', 'active' => request()->segment(2) == 'product-purchase-report']
+                            );
+
+                            $sub->url(
+                                action([\App\Http\Controllers\ReportController::class, 'purchasePaymentReport']),
+                                __('lang_v1.purchase_payment_report'),
+                                ['icon' => 'fa fas fa-search-dollar', 'active' => request()->segment(2) == 'purchase-payment-report']
                             );
                         }
                     },
@@ -711,11 +758,11 @@ class AdminSidebarMenu
                                 __('business.business_settings'),
                                 ['icon' => 'fa fas fa-cogs', 'active' => request()->segment(1) == 'business', 'id' => 'tour_step2']
                             );
-                            $sub->url(
-                                action([\App\Http\Controllers\BusinessLocationController::class, 'index']),
-                                __('business.business_locations'),
-                                ['icon' => 'fa fas fa-map-marker', 'active' => request()->segment(1) == 'business-location']
-                            );
+                            // $sub->url(
+                            //     action([\App\Http\Controllers\BusinessLocationController::class, 'index']),
+                            //     __('business.business_locations'),
+                            //     ['icon' => 'fa fas fa-map-marker', 'active' => request()->segment(1) == 'business-location']
+                            // );
                         }
                         if (auth()->user()->can('invoice_settings.access')) {
                             $sub->url(
