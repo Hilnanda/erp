@@ -382,7 +382,7 @@ return [
     'date' => 'Date',
     'age' => 'Age',
     'create_new_backup' => 'Create New Backup',
-    'all_sales' => 'All Sales',
+    'all_sales' => 'Sales Order List',
     'opening_balance' => 'Opening Balance',
     'opening_balance_due' => 'Opening Balance Due',
     'import_contacts' => 'Import Contacts',
