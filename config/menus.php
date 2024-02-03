@@ -16,4 +16,7 @@ return [
 
     'ordering' => true,
 
+    'modules' => [
+        'essentials' => env('ENABLE_ESSENTIALS_MODULE', true),
+    ],
 ];
