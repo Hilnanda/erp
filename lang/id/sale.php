@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'sale' => 'Penjualan',
+    'sale' => 'Menu Penjualan',
     'sells' => 'List Sales Order',
     'list_sale' => 'List Sales Order',
     'add_sale' => 'Input Sales Order',

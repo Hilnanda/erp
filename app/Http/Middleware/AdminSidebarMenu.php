@@ -406,6 +406,12 @@ class AdminSidebarMenu
                                 ['icon' => 'fa fas fa-file-import', 'active' => request()->segment(1) == 'import-sales']
                             );
                         }
+
+                        $sub->url(
+                            action([\App\Http\Controllers\ReportController::class, 'getproductSellReport']),
+                            __('lang_v1.product_sell_report'),
+                            ['icon' => 'fa fas fa-arrow-circle-up', 'active' => request()->segment(2) == 'product-sell-report']
+                        );
                     },
                     ['icon' => 'fa fas fa-arrow-circle-up', 'id' => 'tour_step7']
                 )->order(30);

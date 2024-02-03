@@ -301,7 +301,7 @@ return [
     'card_transaction_details' => 'Detail transaksi kartu',
     'client_tax_label' => 'Label nomor pajak klien',
     'cat_code_label' => 'Kategori atau label kode HSN',
-    'list_sell_return' => 'Daftar Retur Jual',
+    'list_sell_return' => 'List Retur Penjualan',
     'sell_return' => 'Retur Jual',
     'layout_credit_note' => 'Catatan Kredit / Rincian Retur Jual',
     'cn_heading' => 'Judul',
