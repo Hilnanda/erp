@@ -328,7 +328,7 @@ class DataController extends Controller
         $business_id = session()->get('user.business_id');
         $is_essentials_enabled = (bool) $module_util->hasThePermissionInSubscription($business_id, 'essentials_module');
 
-        if ($is_essentials_enabled) {
+        if ($is_essentials_enabled && config('menus.modules.essentials')) {
             Menu::modify('admin-sidebar-menu', function ($menu) {
                 $menu->url(
                         action([\Modules\Essentials\Http\Controllers\DashboardController::class, 'hrmDashboard']),
