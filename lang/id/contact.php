@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'contacts' => 'Kontak',
+    'contacts' => 'Menu Administrasi',
     'name' => 'Nama',
     'contact' => 'Kontak',
     'manage_your_contact' => 'Mengelola :contacts Anda',
