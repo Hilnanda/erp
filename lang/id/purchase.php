@@ -11,10 +11,10 @@ return [
     |
     */
 
-    'supplier' => 'Pemasok',
+    'supplier' => 'Supplier',
     'ref_no' => 'Nomor Referensi',
     'business_location' => 'Lokasi Bisnis',
-    'purchases' => 'Pembelian',
+    'purchases' => 'Menu Pembelian',
     'add_payment' => 'Tambahkan pembayaran',
     'edit_payment' => 'Edit pembayaran',
     'view_payments' => 'Lihat pembayaran',
@@ -34,7 +34,7 @@ return [
     'purchase_status' => 'Status Pembelian',
     'payment_status' => 'Status Pembayaran',
     'grand_total' => 'Grand Total',
-    'add_purchase' => 'Tambah Pembelian',
+    'add_purchase' => 'Input PO (Puchase Order)',
     'purchase_date' => 'Tanggal Pembelian',
     'purchase_quantity' => 'Kuantitas Pembelian',
     'unit_cost_before_tax' => 'Modal Satuan (Sebelum Pajak)',
@@ -64,7 +64,7 @@ return [
     'purchase_currency' => 'Mata Uang Pembelian',
     'p_exchange_rate' => 'Nilai tukar mata uang',
     'diff_purchase_currency_help' => 'Mata uang pembelian diatur ke <strong> :currency </strong>',
-    'list_purchase' => 'Daftar Pembelian',
+    'list_purchase' => 'List PO (Puchase Order)',
     'attach_document' => 'Lampirkan Dokumen',
     'download_document' => 'Unduh Dokumen',
     'max_file_size' => 'Ukuran file maks: :sizeMB',

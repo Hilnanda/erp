@@ -74,7 +74,7 @@ return [
     'accounting_method' => 'Metode Akutansi Stok',
     'fifo' => 'FIFO (First In First Out)',
     'lifo' => 'LIFO (Last In First Out)',
-    'business_locations' => 'Lokasi Bisnis',
+    'business_locations' => 'Warehouse Location',
     'business_location' => 'Lokasi Bisnis',
     'manage_your_business_locations' => 'Mengelola lokasi bisnis Anda',
     'all_your_business_locations' => 'Semua lokasi bisnis Anda',
