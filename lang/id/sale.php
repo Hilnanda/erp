@@ -11,10 +11,10 @@ return [
     |
     */
 
-    'sale' => 'Penjualan',
-    'sells' => 'Penjualan',
-    'list_sale' => 'Daftar Penjualan',
-    'add_sale' => 'Tambah Penjualan',
+    'sale' => 'Menu Penjualan',
+    'sells' => 'List Sales Order',
+    'list_sale' => 'List Sales Order',
+    'add_sale' => 'Input Sales Order',
     'pos_sale' => 'POS',
     'draft_added' => 'Konsep berhasil ditambahkan',
     'invoice_added' => 'Faktur berhasil ditambahkan',
