@@ -33,14 +33,14 @@
         @endif
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        @if (Route::has('login'))
+        {{-- @if (Route::has('login'))
             @if(!Auth::check())
                 <li><a href="{{ route('login') }}">@lang('lang_v1.login')</a></li>
                 @if(config('constants.allow_registration'))
                     <li><a href="{{ route('business.getRegister') }}">@lang('lang_v1.register')</a></li>
                 @endif
             @endif
-        @endif
+        @endif --}}
       </ul>
     </div><!-- nav-collapse -->
   </div>
