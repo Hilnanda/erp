@@ -406,8 +406,33 @@
 
 			@if(!empty($receipt_details->payments))
 				@foreach($receipt_details->payments as $payment)
+				@php
+					$nama_bank = explode(",",env('NAMA_BANK'));
+					$no_rek = explode(",",env('NO_REK'));
+					$atas_nama = explode(",",env('ATAS_NAMA'));
+					$combinedData = [];
+
+					$count = count($nama_bank);
+
+					for ($i = 0; $i < $count; $i++) {
+						$combinedData[] = [
+							'nama_bank' => $nama_bank[$i],
+							'no_rek' => $no_rek[$i],
+							'atas_nama' => $atas_nama[$i]
+						];
+					}
+				@endphp
 					<tr>
+						@if (strtolower(env('CODE_TRANSFER')) == strtolower($payment['method']))
+						<td>
+							@foreach ($combinedData as $item)
+							Transfer {{ $item['nama_bank'] }} : {{ $item['no_rek'] }} <br>
+							{{ $item['atas_nama'] }} <br>
+							@endforeach
+						</td>
+						@else
 						<td>{{$payment['method']}}</td>
+						@endif
 						<td class="text-right" >{{$payment['amount']}}</td>
 						<td class="text-right">{{$payment['date']}}</td>
 					</tr>
