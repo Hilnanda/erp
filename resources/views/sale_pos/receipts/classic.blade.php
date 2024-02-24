@@ -423,10 +423,6 @@
 					}
 				@endphp
 					<tr>
-						<td>
-							{{ strtolower(env('CODE_TRANSFER')) }} ==
-							{{ strtolower($payment['method']) }}
-						</td>
 						@if (strtolower(env('CODE_TRANSFER')) == strtolower($payment['method']))
 						<td>
 							@foreach ($combinedData as $item)
