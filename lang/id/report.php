@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'reports' => 'Laporan',
+    'reports' => 'Finance',
     'purchase_sell_report' => 'Pembelian & Penjualan',
     'purchase_sell' => 'Laporan Pembelian & Penjualan',
     'purchase_sell_msg' => 'Detail pembelian & penjualan untuk rentang tanggal yang dipilih',
