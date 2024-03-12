@@ -27,6 +27,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="option-div">
+                                <h4>FORMAT: <br>CUSTOM <i class="fa fa-check-circle pull-right icon"></i></h4>
+                                {!! Form::radio('scheme_type', 'custom'); !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 hide" id="custom_invoice_number_form">
+                    <div class="form-group">
+                        <label>Custom Format:</label>
+                        <div class="alert alert-info" style="padding: 5px; margin-bottom: 5px;" role="alert">
+                            Available: %number%, %month%, %year%
+                        </div>
+                        {!! Form::text('common_settings[custom_invoice_number]', $common_settings['custom_invoice_number'] ?? '', ['class' => 'form-control', 'id' => 'custom_invoice_number', 'name' => 'custom_invoice_number']); !!}
+                    </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">

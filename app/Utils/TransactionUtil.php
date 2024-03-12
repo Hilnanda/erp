@@ -24,6 +24,7 @@ use App\TransactionSellLine;
 use App\TransactionSellLinesPurchaseLines;
 use App\Variation;
 use App\VariationLocationDetails;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -2324,20 +2325,55 @@ class TransactionUtil extends Util
             $scheme->invoice_count = $scheme->invoice_count + 1;
             $scheme->save();
 
-            return $invoice_no;
+            return $this->getFormattedInvoiceNumber($invoice_no, $business_id, $location_id, $invoice_scheme_id);
         } elseif ($status == 'draft') {
             $ref_count = $this->setAndGetReferenceCount('draft', $business_id);
             $invoice_no = $this->generateReferenceNumber('draft', $ref_count, $business_id);
 
-            return $invoice_no;
+            return $this->getFormattedInvoiceNumber($invoice_no, $business_id, $location_id, $invoice_scheme_id);
         } elseif ($sale_type == 'sales_order') {
             $ref_count = $this->setAndGetReferenceCount('sales_order', $business_id);
             $invoice_no = $this->generateReferenceNumber('sales_order', $ref_count, $business_id);
 
-            return $invoice_no;
+            return $this->getFormattedInvoiceNumber($invoice_no, $business_id, $location_id, $invoice_scheme_id);
         } else {
-            return Str::random(5);
+            return $this->getFormattedInvoiceNumber(Str::random(5), $business_id, $location_id, $invoice_scheme_id);
         }
+    }
+
+    public function getFormattedInvoiceNumber($invoice_no, $business_id, $location_id = null, $invoice_scheme_id = null)
+    {
+        $business = Business::find($business_id);
+        $common_settings = $business->common_settings;
+        if (empty($invoice_scheme_id)) {
+            $scheme = $this->getInvoiceScheme($business_id, $location_id);
+        } else {
+            $scheme = InvoiceScheme::where('business_id', $business_id)
+                ->find($invoice_scheme_id);
+        }
+
+        if ($scheme->scheme_type == 'custom') {
+            if ($scheme->number_type == 'sequential') {
+                $count = $scheme->start_number + $scheme->invoice_count;
+            } elseif ($scheme->number_type == 'random') {
+                $max = (int)str_pad(1, $scheme->total_digits, '1');
+                $count = rand(1000, 9 * $max);
+            }
+            $count = str_pad($count, $scheme->total_digits, '0', STR_PAD_LEFT);
+
+            $template = Arr::get($common_settings, 'custom_invoice_number');
+            $date = now();
+            $month = date_format($date, 'm');
+            $year = date_format($date, 'Y');
+
+            $template = str_replace('%number%', $count, $template);
+            $template = str_replace('%month%', $month, $template);
+            $template = str_replace('%year%', $year, $template);
+
+            $invoice_no = $scheme->prefix . $template;
+        }
+
+        return $invoice_no;
     }
 
     private function getInvoiceScheme($business_id, $location_id)

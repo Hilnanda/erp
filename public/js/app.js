@@ -1088,6 +1088,9 @@ $(document).ready(function() {
         
         show_invoice_preview();
     });
+    $(document).on('keyup', '#custom_invoice_number', function () {
+        show_invoice_preview();
+    });
     $(document).on('change', '#prefix', function() {
         show_invoice_preview();
     });
@@ -2148,15 +2151,30 @@ function printer_connection_type_field(ctype) {
 function show_invoice_preview() {
     if ($('input[type=radio][name=scheme_type]:checked').val() == 'blank') {
         var scheme_type = '';
+        $('div#custom_invoice_number_form').addClass('hide');
     } else if ($('input[type=radio][name=scheme_type]:checked').val() == 'year') {
         var d = new Date();
         var this_year = d.getFullYear();
         var scheme_type = this_year + APP.INVOICE_SCHEME_SEPARATOR;
+        $('div#custom_invoice_number_form').addClass('hide');
+    } else if ($('input[type=radio][name=scheme_type]:checked').val() == 'custom') {
+        var d = new Date();
+        var this_month = ("0" + (d.getMonth() + 1)).slice(-2);
+        var this_year = d.getFullYear();
+        var format = $('input[type=text][name=custom_invoice_number]').val();
+        var scheme_type = '';
+        $('div#custom_invoice_number_form').removeClass('hide');
     }
     var prefix = $('#prefix').val()+scheme_type;
     var start_number = $('#start_number').val();
     var total_digits = $('#total_digits').val();
-    var preview = prefix + pad_zero(start_number, total_digits);
+    var preview = pad_zero(start_number, total_digits);
+    if ($('input[type=radio][name=scheme_type]:checked').val() == 'custom') {
+        format = format.replace('%year%', this_year);
+        format = format.replace('%month%', this_month);
+        preview = format.replace('%number%', preview);
+    }
+    preview = prefix + preview;
     $('#preview_format').text('#' + preview);
 }
 function pad_zero(str, max) {
