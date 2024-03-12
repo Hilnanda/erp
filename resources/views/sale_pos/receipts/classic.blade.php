@@ -406,7 +406,7 @@
 
 			@if(!empty($receipt_details->payments))
 				@foreach($receipt_details->payments as $payment)
-				@php
+				{{-- @php
 					$nama_bank = explode(",",env('NAMA_BANK'));
 					$no_rek = explode(",",env('NO_REK'));
 					$atas_nama = explode(",",env('ATAS_NAMA'));
@@ -421,18 +421,27 @@
 							'atas_nama' => $atas_nama[$i]
 						];
 					}
-				@endphp
+				@endphp --}}
 					<tr>
-						@if (strtolower(env('CODE_TRANSFER')) == strtolower($payment['method']))
+						{{-- @if (strtolower(env('CODE_TRANSFER')) == strtolower($payment['method'])) --}}
 						<td>
-							@foreach ($combinedData as $item)
+							{{-- @foreach ($combinedData as $item)
 							Transfer {{ $item['nama_bank'] }} : {{ $item['no_rek'] }} <br>
 							{{ $item['atas_nama'] }} <br>
-							@endforeach
+							@endforeach --}}
+							{{$payment['method']}} <br>
+							BCA : 316-034-5470 <br>
+							a/n. Ayu Hani Hartiana <br>
+							Mandiri : 141-00-2283-1812 <br>
+							a/n. Ayu Hani Hartiana
 						</td>
-						@else
-						<td>{{$payment['method']}}</td>
-						@endif
+						{{-- @else --}}
+						{{-- @endif --}}
+						{{-- <td></td> --}}
+						{{-- <td class="text-right" >{{$payment['amount']}}</td> --}}
+						
+					</tr>
+					<tr>
 						<td class="text-right" >{{$payment['amount']}}</td>
 						<td class="text-right">{{$payment['date']}}</td>
 					</tr>
@@ -625,7 +634,7 @@
 							{{$receipt_details->total}}
 							@if(!empty($receipt_details->total_in_words))
 								<br>
-								<small>({{$receipt_details->total_in_words}})</small>
+								<small><b>({{$receipt_details->total_in_words}})</b></small>
 							@endif
 						</td>
 					</tr>
