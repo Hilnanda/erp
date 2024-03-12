@@ -536,35 +536,35 @@ class AdminSidebarMenu
             }
 
             //Expense dropdown
-            if (in_array('expenses', $enabled_modules) && (auth()->user()->can('all_expense.access') || auth()->user()->can('view_own_expense'))) {
-                $menu->dropdown(
-                    __('expense.expenses'),
-                    function ($sub) {
-                        $sub->url(
-                            action([\App\Http\Controllers\ExpenseController::class, 'index']),
-                            __('lang_v1.list_expenses'),
-                            ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'expenses' && request()->segment(2) == null]
-                        );
+            // if (in_array('expenses', $enabled_modules) && (auth()->user()->can('all_expense.access') || auth()->user()->can('view_own_expense'))) {
+            //     $menu->dropdown(
+            //         __('expense.expenses'),
+            //         function ($sub) {
+            //             $sub->url(
+            //                 action([\App\Http\Controllers\ExpenseController::class, 'index']),
+            //                 __('lang_v1.list_expenses'),
+            //                 ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'expenses' && request()->segment(2) == null]
+            //             );
 
-                        if (auth()->user()->can('expense.add')) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ExpenseController::class, 'create']),
-                                __('expense.add_expense'),
-                                ['icon' => 'fa fas fa-plus-circle', 'active' => request()->segment(1) == 'expenses' && request()->segment(2) == 'create']
-                            );
-                        }
+            //             if (auth()->user()->can('expense.add')) {
+            //                 $sub->url(
+            //                     action([\App\Http\Controllers\ExpenseController::class, 'create']),
+            //                     __('expense.add_expense'),
+            //                     ['icon' => 'fa fas fa-plus-circle', 'active' => request()->segment(1) == 'expenses' && request()->segment(2) == 'create']
+            //                 );
+            //             }
 
-                        if (auth()->user()->can('expense.add') || auth()->user()->can('expense.edit')) {
-                            $sub->url(
-                                action([\App\Http\Controllers\ExpenseCategoryController::class, 'index']),
-                                __('expense.expense_categories'),
-                                ['icon' => 'fa fas fa-circle', 'active' => request()->segment(1) == 'expense-categories']
-                            );
-                        }
-                    },
-                    ['icon' => 'fa fas fa-minus-circle']
-                )->order(45);
-            }
+            //             if (auth()->user()->can('expense.add') || auth()->user()->can('expense.edit')) {
+            //                 $sub->url(
+            //                     action([\App\Http\Controllers\ExpenseCategoryController::class, 'index']),
+            //                     __('expense.expense_categories'),
+            //                     ['icon' => 'fa fas fa-circle', 'active' => request()->segment(1) == 'expense-categories']
+            //                 );
+            //             }
+            //         },
+            //         ['icon' => 'fa fas fa-minus-circle']
+            //     )->order(45);
+            // }
             //Accounts dropdown
             if (auth()->user()->can('account.access') && in_array('account', $enabled_modules)) {
                 $menu->dropdown(
