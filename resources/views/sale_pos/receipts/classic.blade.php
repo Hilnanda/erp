@@ -632,6 +632,10 @@
 						</th>
 						<td class="text-right">
 							{{$receipt_details->total}}
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="text-right">
 							@if(!empty($receipt_details->total_in_words))
 								<br>
 								<small><b>({{$receipt_details->total_in_words}})</b></small>
