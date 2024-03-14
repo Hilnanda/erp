@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Business;
 use App\InvoiceLayout;
 use App\InvoiceScheme;
 use Datatables;
@@ -118,7 +119,14 @@ class InvoiceSchemeController extends Controller
                                 ->update(['is_default' => 0]);
                 $input['is_default'] = 1;
             }
-            InvoiceScheme::create($input);
+            $invoice = InvoiceScheme::create($input);
+
+            $business = Business::find($invoice->business_id);
+            $common_settings = $business->common_settings;
+            $common_settings['custom_invoice_number'] = $request->input('custom_invoice_number');
+            $business->common_settings = $common_settings;
+            $business->save();
+
             $output = ['success' => true,
                 'msg' => __('invoice.added_success'),
             ];
@@ -162,11 +170,13 @@ class InvoiceSchemeController extends Controller
 
         $business_id = request()->session()->get('user.business_id');
         $invoice = InvoiceScheme::where('business_id', $business_id)->find($id);
+        $business = Business::find($business_id);
+        $common_settings = $business->common_settings;
 
         $number_types = $this->number_types;
 
         return view('invoice_scheme.edit')
-            ->with(compact('invoice', 'number_types'));
+            ->with(compact('invoice', 'number_types', 'common_settings'));
     }
 
     /**
@@ -187,7 +197,14 @@ class InvoiceSchemeController extends Controller
 
             $input['start_number'] = ($input['number_type'] == 'aleatory') ? '' : $input['start_number'];
 
-            $invoice = InvoiceScheme::where('id', $id)->update($input);
+            InvoiceScheme::where('id', $id)->update($input);
+            $invoice = InvoiceScheme::find($id);
+            
+            $business = Business::find($invoice->business_id);
+            $common_settings = $business->common_settings;
+            $common_settings['custom_invoice_number'] = $request->input('custom_invoice_number');
+            $business->common_settings = $common_settings;
+            $business->save();
 
             $output = ['success' => true,
                 'msg' => __('invoice.updated_success'),
