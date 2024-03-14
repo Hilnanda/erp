@@ -17,14 +17,14 @@
 <!-- Main content -->
 <section class="content">
     @component('components.widget', ['class' => 'box-primary', 'title' => __( 'business.all_your_business_locations' )])
-        @slot('tool')
+        {{-- @slot('tool')
             <div class="box-tools">
                 <button type="button" class="btn btn-block btn-primary btn-modal" 
                     data-href="{{action([\App\Http\Controllers\BusinessLocationController::class, 'create'])}}" 
                     data-container=".location_add_modal">
                     <i class="fa fa-plus"></i> @lang( 'messages.add' )</button>
             </div>
-        @endslot
+        @endslot --}}
         <div class="table-responsive">
             <table class="table table-bordered table-striped" id="business_location_table">
                 <thead>
