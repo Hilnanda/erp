@@ -279,7 +279,7 @@ return [
     '12_hour' => '12 Jam',
     '24_hour' => '24 Jam',
     'list_quotations' => 'Daftar Penawaran',
-    'list_drafts' => 'Sales Order Pending',
+    'list_drafts' => 'List Sales Order Pending',
     'you_cannot_delete_this_contact' => 'Tidak dapat menghapus kontak - Transaksi sudah ada pada kontak.',
     'enable_row' => 'Aktifkan Baris',
     'enable_position' => 'Aktifkan Posisi',
