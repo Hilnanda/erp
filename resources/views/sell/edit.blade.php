@@ -279,6 +279,7 @@
 				        </div>
 				    </div>
 		        @endif
+				@if (auth()->user()->can('add_sell_document'))
 		        <div class="col-sm-3">
 	                <div class="form-group">
 	                    {!! Form::label('upload_document', __('purchase.attach_document') . ':') !!}
@@ -287,6 +288,7 @@
 	                    @includeIf('components.document_help_text')</p>
 	                </div>
 	            </div>
+				@endif
 		        <div class="clearfix"></div>
 		        @if((!empty($pos_settings['enable_sales_order']) && $transaction->type != 'sales_order') || $is_order_request_enabled)
 					<div class="col-sm-3">

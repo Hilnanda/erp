@@ -836,6 +836,14 @@
           <div class="col-md-12">
             <div class="checkbox">
               <label>
+                {!! Form::checkbox('permissions[]', 'add_sell_document', false, ['class' => 'input-icheck']); !!}
+                {{ __('lang_v1.add_document') }}
+              </label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="checkbox">
+              <label>
                 {!! Form::checkbox('permissions[]', 'delete_sell_payment', false, ['class' => 'input-icheck']); !!}
                 {{ __('lang_v1.delete_sell_payment') }}
               </label>

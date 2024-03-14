@@ -1351,4 +1351,5 @@ return [
     'print_po' => 'Cetak PO',
     'enable_purchase_print_shipping_details' => 'Tampilkan Rincian Pengiriman',
     'enable_purchase_print_barcode' => 'Tampilkan Barcode',
+    'add_document' => 'Tampilkan Lampiran Dokumen',
 ];
