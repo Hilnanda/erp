@@ -1,4 +1,17 @@
 <div class="modal-header">
+  <!-- Logo -->
+  @php
+  $is_show_purchase_logo = \Arr::get($purchase->contact->business->common_settings, 'enable_purchase_print_logo');
+  $purchase_logo = \Arr::get($purchase->contact->business->common_settings, 'purchase_logo');
+  $purchase_print_logo = $is_show_purchase_logo && !empty($purchase_logo) && file_exists(public_path('uploads/invoice_logos/'.$purchase_logo)) ? asset('uploads/invoice_logos/'.$purchase_logo) : false;
+  @endphp
+  @if(isset($isPrint) && $isPrint && $is_show_purchase_logo && $purchase_print_logo)
+  <div class="row">
+    <div class="col text-center">
+      <img style="max-height: 120px; width: auto;" src="{{$purchase_print_logo}}" class="img">
+    </div>
+  </div>
+  @endif
   <button type="button" class="close no-print" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   @php
   $title = $purchase->type == 'purchase_order' ? __('lang_v1.purchase_order_details') : __('purchase.purchase_details');
@@ -242,6 +255,7 @@
     </div>
   </div>
   <br>
+  @if(!isset($isPrint) || ($isPrint && \Arr::get($purchase->contact->business->common_settings, 'enable_purchase_print_payment_information')))
   <div class="row">
     @if(!empty($purchase->type == 'purchase'))
     <div class="col-sm-12 col-xs-12">
@@ -377,6 +391,7 @@
       </div>
     </div>
   </div>
+  @endif
   <div class="row">
     <div class="col-sm-6">
       @if(\Arr::get($purchase->contact->business->common_settings, 'enable_purchase_print_shipping_details'))

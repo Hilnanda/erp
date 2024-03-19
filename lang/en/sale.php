@@ -42,6 +42,7 @@ return [
     'no_recent_transactions' => 'No Recent Transactions',
     'final' => 'Final',
     'invoice_no' => 'Invoice No.',
+    'expired_at' => 'Expired At',
     'customer_name' => 'Customer name',
     'payment_status' => 'Payment Status',
     'status' => 'Status',

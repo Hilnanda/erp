@@ -12,12 +12,14 @@ use App\User;
 use App\Utils\BusinessUtil;
 use App\Utils\ModuleUtil;
 use App\Utils\RestaurantUtil;
+use App\Utils\Util;
 use Carbon\Carbon;
 use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+use Validator;
 
 class BusinessController extends Controller
 {
@@ -42,16 +44,19 @@ class BusinessController extends Controller
 
     protected $mailDrivers;
 
+    protected $commonUtil;
+
     /**
      * Constructor
      *
      * @param  ProductUtils  $product
      * @return void
      */
-    public function __construct(BusinessUtil $businessUtil, RestaurantUtil $restaurantUtil, ModuleUtil $moduleUtil)
+    public function __construct(BusinessUtil $businessUtil, RestaurantUtil $restaurantUtil, ModuleUtil $moduleUtil, Util $commonUtil)
     {
         $this->businessUtil = $businessUtil;
         $this->moduleUtil = $moduleUtil;
+        $this->commonUtil = $commonUtil;
 
         $this->theme_colors = [
             'blue' => 'Blue',
@@ -349,6 +354,10 @@ class BusinessController extends Controller
         }
 
         try {
+            $validator = Validator::make($request->all(), [
+                'purchase_logo' => 'mimes:jpeg,gif,png|1000',
+            ]);
+
             $notAllowed = $this->businessUtil->notAllowedInDemo();
             if (! empty($notAllowed)) {
                 return $notAllowed;
@@ -448,6 +457,12 @@ class BusinessController extends Controller
             $business_details['custom_labels'] = json_encode($business_details['custom_labels']);
 
             $business_details['common_settings'] = ! empty($request->input('common_settings')) ? $request->input('common_settings') : [];
+
+            //Upload Logo
+            $logo_name = $this->commonUtil->uploadFile($request, 'purchase_logo', 'invoice_logos', 'image');
+            if (! empty($logo_name)) {
+                $business_details['common_settings']['purchase_logo'] = $logo_name;
+            }
 
             //Enabled modules
             $enabled_modules = $request->input('enabled_modules');

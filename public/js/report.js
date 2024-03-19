@@ -496,6 +496,7 @@ $(document).ready(function() {
             columns: [
                 { data: 'transaction_date', name: 'transaction_date' },
                 { data: 'invoice_no', name: 'invoice_no' },
+                { data: 'due_date', name: 'due_date' },
                 { data: 'conatct_name', name: 'conatct_name' },
                 { data: 'business_location', name: 'bl.name' },
                 { data: 'payment_status', name: 'payment_status' },
@@ -527,6 +528,20 @@ $(document).ready(function() {
                     __sum_status_html($('#sr_sales_report'), 'payment-status-label')
                 );
                 __currency_convert_recursively($('#sr_sales_report'));
+            },
+            "createdRow": function (row, data, dataIndex) {
+                if (data.payment_status.includes('paid')) {
+                    $(row).addClass('greenBg');
+                    return;
+                }
+                var now = new Date();
+                var due = new Date(data['due_date']);
+                var due_in = (due - now) / 86400000;
+                if (due_in <= 0) {
+                    $(row).addClass('redBg');
+                } else if (due_in <= 3) {
+                    $(row).addClass('yellowBg');
+                }
             },
         });
 
@@ -602,6 +617,7 @@ $(document).ready(function() {
             columns: [
                 { data: 'transaction_date', name: 'transaction_date' },
                 { data: 'invoice_no', name: 'invoice_no' },
+                { data: 'due_date', name: 'due_date' },
                 { data: 'conatct_name', name: 'conatct_name' },
                 { data: 'business_location', name: 'bl.name' },
                 { data: 'payment_status', name: 'payment_status' },
@@ -612,7 +628,7 @@ $(document).ready(function() {
             columnDefs: [
                 {
                     searchable: false,
-                    targets: [6],
+                    targets: [7],
                 },
             ],
             fnDrawCallback: function(oSettings) {
@@ -636,6 +652,20 @@ $(document).ready(function() {
                 );
                 __currency_convert_recursively($('#sr_sales_with_commission_table'));
                 __currency_convert_recursively($('#sr_sales_with_commission'));
+            },
+            "createdRow": function (row, data, dataIndex) {
+                if (data.payment_status.includes('paid')) {
+                    $(row).addClass('greenBg');
+                    return;
+                }
+                var now = new Date();
+                var due = new Date(data['due_date']);
+                var due_in = (due - now) / 86400000;
+                if (due_in <= 0) {
+                    $(row).addClass('redBg');
+                } else if (due_in <= 3) {
+                    $(row).addClass('yellowBg');
+                }
             },
         });
 

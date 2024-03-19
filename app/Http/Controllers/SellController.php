@@ -476,6 +476,7 @@ class SellController extends Controller
                     }
                 )
                 ->editColumn('transaction_date', '{{@format_datetime($transaction_date)}}')
+                ->editColumn('due_date', '{{@format_datetime($due_date)}}')
                 ->editColumn(
                     'payment_status',
                     function ($row) {

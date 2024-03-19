@@ -104,6 +104,24 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
+            <div class="form-group" style="padding-left: 20px;">
+                {!! Form::label('logo', __('lang_v1.logo') . ':') !!}
+                {!! Form::file('purchase_logo', ['accept' => 'image/*']); !!}
+                <span class="help-block">@lang('lang_v1.invoice_logo_help', ['max_size' => '1 MB'])<br> @lang('lang_v1.invoice_logo_help2')</span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        {!! Form::checkbox('common_settings[enable_purchase_print_logo]', 1, !empty($common_settings['enable_purchase_print_logo']) , [ 'class' => 'input-icheck', 'id' => 'enable_purchase_print_logo']); !!} {{ __( 'lang_v1.enable_purchase_print_logo' ) }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
             <div class="form-group">
                 <div class="checkbox">
                     <label>
@@ -117,6 +135,15 @@
                 <div class="checkbox">
                     <label>
                         {!! Form::checkbox('common_settings[enable_purchase_print_barcode]', 1, !empty($common_settings['enable_purchase_print_barcode']) , [ 'class' => 'input-icheck', 'id' => 'enable_purchase_print_barcode']); !!} {{ __( 'lang_v1.enable_purchase_print_barcode' ) }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        {!! Form::checkbox('common_settings[enable_purchase_print_payment_information]', 1, !empty($common_settings['enable_purchase_print_payment_information']) , [ 'class' => 'input-icheck', 'id' => 'enable_purchase_print_payment_information']); !!} {{ __( 'lang_v1.enable_purchase_print_payment_information' ) }}
                     </label>
                 </div>
             </div>
