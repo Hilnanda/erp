@@ -43,6 +43,7 @@ return [
     'no_recent_transactions' => 'Tidak Ada Transaksi Terbaru',
     'final' => 'Final',
     'invoice_no' => 'No. Faktur',
+    'expired_at' => 'Jatuh Tempo',
     'customer_name' => 'Nama Pelanggan',
     'payment_status' => 'Status pembayaran',
     'status' => 'Status',

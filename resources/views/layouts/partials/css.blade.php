@@ -69,6 +69,30 @@
 	  -webkit-transform: rotate(315deg);
 	  transform: rotate(315deg);
 	}
+
+    .yellowBg {
+        background-color: #fcf8e3 !important;
+    }
+
+	.yellowBg:hover {
+        background-color: #f7ecb3 !important;
+    }
+
+    .redBg {
+        background-color: #f2dede !important;
+    }
+
+	.redBg:hover {
+        background-color: #e7c2c2 !important;
+    }
+
+    .greenBg {
+        background-color: #dff0d8 !important;
+    }
+
+	.greenBg:hover {
+        background-color: #cde8c1 !important;
+    }
 </style>
 @if(!empty($__system_settings['additional_css']))
     {!! $__system_settings['additional_css'] !!}

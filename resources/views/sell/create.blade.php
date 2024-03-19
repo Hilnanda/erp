@@ -321,7 +321,8 @@
 				        </div>
 				    </div>
 		        @endif
-		        <div class="col-sm-3">
+				@if (auth()->user()->can('add_sell_document'))
+				<div class="col-sm-3">
 	                <div class="form-group">
 	                    {!! Form::label('upload_document', __('purchase.attach_document') . ':') !!}
 	                    {!! Form::file('sell_document', ['id' => 'upload_document', 'accept' => implode(',', array_keys(config('constants.document_upload_mimes_types')))]); !!}
@@ -331,6 +332,8 @@
 	                    </p>
 	                </div>
 	            </div>
+				@endif
+		        
 		        <div class="clearfix"></div>
 
 		        @if((!empty($pos_settings['enable_sales_order']) && $sale_type != 'sales_order') || $is_order_request_enabled)

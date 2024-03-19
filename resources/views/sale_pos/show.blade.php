@@ -30,6 +30,10 @@
         <br>
         @if($sell->type != 'sales_order')
           <b>{{ __('sale.payment_status') }}:</b> @if(!empty($sell->payment_status)){{ __('lang_v1.' . $sell->payment_status) }}
+          @if(!empty($sell->payment_status) && str_contains($sell->payment_status, 'due'))
+          <br>
+          <b>{{ __('sale.expired_at') }}:</b> {{ @format_datetime($sell->due_date) }}
+          @endif
           @endif
         @endif
         @if(!empty($custom_labels['sell']['custom_field_1']))

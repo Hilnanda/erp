@@ -246,13 +246,13 @@
         
         <div class="col-md-4 opening_balance">
           <div class="form-group">
-              {!! Form::label('opening_balance', __('lang_v1.opening_balance') . ':') !!}
+              {{-- {!! Form::label('opening_balance', __('lang_v1.opening_balance') . ':') !!}
               <div class="input-group">
                   <span class="input-group-addon">
                       <i class="fas fa-money-bill-alt"></i>
                   </span>
                   {!! Form::text('opening_balance', $opening_balance, ['class' => 'form-control input_number']); !!}
-              </div>
+              </div> --}}
           </div>
         </div>
 
