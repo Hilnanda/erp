@@ -535,7 +535,7 @@ $(document).ready(function() {
                     return;
                 }
                 var now = new Date();
-                var due = new Date(data['due_date']);
+                var due = new Date(data['due_date_raw']);
                 var due_in = (due - now) / 86400000;
                 if (due_in <= 0) {
                     $(row).addClass('redBg');
@@ -659,7 +659,7 @@ $(document).ready(function() {
                     return;
                 }
                 var now = new Date();
-                var due = new Date(data['due_date']);
+                var due = new Date(data['due_date_raw']);
                 var due_in = (due - now) / 86400000;
                 if (due_in <= 0) {
                     $(row).addClass('redBg');
