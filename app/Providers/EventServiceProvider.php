@@ -27,6 +27,22 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\TransactionPaymentDeleted::class => [
             \App\Listeners\DeleteAccountTransaction::class,
         ],
+
+        \App\Events\SalesOrderCreated::class => [
+            \App\Listeners\OnSalesOrderCreated::class,
+        ],
+
+        \App\Events\PurchaseOrderCreated::class => [
+            \App\Listeners\OnPurchaseOrderCreated::class,
+        ],
+
+        \App\Events\SalesOrderPayment::class => [
+            \App\Listeners\OnSalesOrderPayment::class,
+        ],
+
+        \App\Events\SalesOrderDue::class => [
+            \App\Listeners\OnSalesOrderDue::class,
+        ],
     ];
 
     /**

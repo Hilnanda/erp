@@ -593,6 +593,8 @@ class SellPosController extends Controller
 
                 $this->transactionUtil->activityLog($transaction, 'added');
 
+                event(new \App\Events\SalesOrderCreated($transaction));
+
                 DB::commit();
 
                 SellCreatedOrModified::dispatch($transaction);

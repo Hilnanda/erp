@@ -418,6 +418,8 @@ class PurchaseController extends Controller
 
             PurchaseCreatedOrModified::dispatch($transaction);
 
+            event(new \App\Events\PurchaseOrderCreated($transaction));
+
             DB::commit();
 
             $output = ['success' => 1,

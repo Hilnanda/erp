@@ -101,3 +101,10 @@ if (! function_exists('str_ordinal')) {
         return number_format($number).$suffix;
     }
 }
+
+if (! function_exists('owner_mobile')) {
+    function owner_mobile()
+    {
+        return env('OWNER_MOBILE');
+    }
+}
