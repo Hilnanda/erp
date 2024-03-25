@@ -152,6 +152,7 @@
 
 			<span class="pull-right text-left">
 				<b>{{$receipt_details->date_label}}</b> {{$receipt_details->invoice_date}}
+				
 
 				@if(!empty($receipt_details->due_date_label))
 				<br><b>{{$receipt_details->due_date_label}}</b> {{$receipt_details->due_date ?? ''}}
@@ -403,8 +404,14 @@
 	<div class="col-xs-6">
 
 		<table class="table table-slim">
-
+			<tr>
+				<td>BCA : 316-034-5470 <br>
+					a/n. Ayu Hani Hartiana <br>
+					Mandiri : 141-00-2283-1812 <br>
+					a/n. Ayu Hani Hartiana</td>
+			</tr>
 			@if(!empty($receipt_details->payments))
+			
 				@foreach($receipt_details->payments as $payment)
 				{{-- @php
 					$nama_bank = explode(",",env('NAMA_BANK'));
@@ -429,11 +436,8 @@
 							Transfer {{ $item['nama_bank'] }} : {{ $item['no_rek'] }} <br>
 							{{ $item['atas_nama'] }} <br>
 							@endforeach --}}
-							{{$payment['method']}} <br>
-							BCA : 316-034-5470 <br>
-							a/n. Ayu Hani Hartiana <br>
-							Mandiri : 141-00-2283-1812 <br>
-							a/n. Ayu Hani Hartiana
+							{{$payment['method']}}
+							
 						</td>
 						{{-- @else --}}
 						{{-- @endif --}}
