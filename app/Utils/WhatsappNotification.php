@@ -24,7 +24,7 @@ trait WhatsappNotification
         $paid_amount = $transactionUtil->getTotalPaid($transaction->id);
         $total_payable = $transaction->final_total - $paid_amount;
 
-        $message = 'Dear ' . $customer?->name . ','
+        $message = 'Dear ' . trim($customer?->name . ' ') . ','
             . $this->newLine . 'Terima kasih telah bertransaksi di MAC'
             . $this->newLine
             . $this->newLine . 'Tanggal : ' . $transactionUtil->format_date($transaction->transaction_date, true)
@@ -38,7 +38,9 @@ trait WhatsappNotification
         }
 
         $message = $message
-            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($total_payable)
+            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true)
+            . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true)
+            . $this->newLine . 'Belum Terbayar : ' . $transactionUtil->num_f($total_payable, true)
             . $this->newLine
             . $this->newLine . 'Jika belum melakukan pembayaran silahkan transfer ke rekening di bawah sebelum ' . $transactionUtil->format_date($transaction->due_date, true)
             . $this->newLine
@@ -78,7 +80,9 @@ trait WhatsappNotification
             }
         }
 
-        $message = $message . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($total_payable);
+        $message = $message . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true)
+            . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true)
+            . $this->newLine . 'Belum Terbayar : ' . $transactionUtil->num_f($total_payable, true);
 
         return $this->sendWhatsappText($receiver, $message);
     }
@@ -105,7 +109,7 @@ trait WhatsappNotification
             . $this->newLine . 'Tanggal : ' . $transactionUtil->format_date($payment->created_at, true)
             . $this->newLine . 'Customer : ' . $customer->name
             . $this->newLine . 'No Invoice : ' . $transaction->invoice_no
-            . $this->newLine . 'Total : ' . $transactionUtil->num_f($payment->amount)
+            . $this->newLine . 'Total : ' . $transactionUtil->num_f($payment->amount, true)
             . $this->newLine . 'Metode Pembayaran : ' . $metode;
 
         return $this->sendWhatsappText($receiver, $message);
@@ -129,7 +133,7 @@ trait WhatsappNotification
             . ' + ' . $transaction->pay_term_number . ' ' . $transaction->pay_term_type));
         $business_details = $businessUtil->getDetails($transaction->business_id);
 
-        $message = 'Dear ' . $customer?->name . ','
+        $message = 'Dear ' . trim($customer?->name) . ','
             . $this->newLine . 'Transaksi anda'
             . $this->newLine
             . $this->newLine . 'Tanggal : ' . $transactionUtil->format_date($transaction->transaction_date, true, $business_details)
@@ -143,7 +147,9 @@ trait WhatsappNotification
         }
 
         $message = $message
-            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($total_payable, false, $business_details)
+            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true, $business_details)
+            . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true, $business_details)
+            . $this->newLine . 'Belum Terbayar : ' . $transactionUtil->num_f($total_payable, true, $business_details)
             . $this->newLine
             . $this->newLine . 'Jatuh tempo pada tanggal ' . $transactionUtil->format_date($due_date, true, $business_details)
             . $this->newLine . 'Mohon segera melakukan pembayaran ke rekening di bawah'

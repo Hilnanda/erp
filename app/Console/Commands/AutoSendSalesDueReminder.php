@@ -48,6 +48,7 @@ class AutoSendSalesDueReminder extends Command
 
             $businesses = Business::where('is_active', 1)->get();
             
+            $count = 0;
             foreach ($businesses as $business) {
                 $reminderDate = now($business->time_zone)->addDays(env('REMINDER_DUE_DAY', 3));
 
@@ -62,6 +63,11 @@ class AutoSendSalesDueReminder extends Command
 
                 foreach ($salesList as $sales) {
                     event(new \App\Events\SalesOrderDue($sales));
+                    $count++;
+                    if ($count == env('REMINDER_DUE_INTERVAL', 10)) {
+                        $count = 0;
+                        sleep((int) env('REMINDER_DUE_DELAY', 60));
+                    }
                 }
             }
 
