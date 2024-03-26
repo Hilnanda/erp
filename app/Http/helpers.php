@@ -112,6 +112,6 @@ if (! function_exists('owner_mobile')) {
 if (! function_exists('get_public_path')) {
     function get_public_path()
     {
-        return $_SERVER['DOCUMENT_ROOT'] ? $_SERVER['DOCUMENT_ROOT'] : $_SERVER['PWD'] . 'public';
+        return isset($_SERVER['PWD']) && $_SERVER['PWD'] ? $_SERVER['PWD'] . '/public' : $_SERVER['DOCUMENT_ROOT'];
     }
 }
