@@ -64,7 +64,7 @@ trait CanPrintInvoice
         if ($saveOnly) {
             $path = get_public_path().'/downloads/'.$filename;
             $pdf->save($path);
-            return url($path);
+            return url('downloads/'.$filename);
         }
         return $pdf->download($filename);
     }
