@@ -93,7 +93,13 @@ trait CanPrintInvoice
                 'msg' => trans('messages.something_went_wrong'),
             ];
 
-            $business_id = $request->session()->get('user.business_id');
+            $business_id = $request ? $request->session()->get('user.business_id') : null;
+            if (!$business_id) {
+                if (!$transaction = Transaction::find($transaction_id)) {
+                    abort(422, 'Transaction not found!');
+                }
+                $business_id = $transaction->business_id;
+            }
 
             $transaction = Transaction::where('business_id', $business_id)
                             ->where('id', $transaction_id)
