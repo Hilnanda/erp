@@ -683,7 +683,7 @@ $col_size = $is_download ? 'col' : 'col-xs';
 	</div>
 
 	@if(!empty($receipt_details->additional_notes))
-	    <div class="{{$col_size}}-12">
+	    <div class="{{$col_size}}-12 text-left">
 	    	<p>{!! nl2br($receipt_details->additional_notes) !!}</p>
 	    </div>
     @endif
