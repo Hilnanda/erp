@@ -45,6 +45,7 @@ trait CanPrintInvoice
      */
     public function downloadInvoice(Request $request, $transaction_id, $saveOnly = false)
     {
+        $this->initTrait();
         $output = $this->getInvoice($request, $transaction_id, true);
         $html = \Arr::get($output, 'receipt.html_content');
         $css_paths = [
@@ -93,23 +94,21 @@ trait CanPrintInvoice
                 'msg' => trans('messages.something_went_wrong'),
             ];
 
-            $business_id = $request ? $request->session()->get('user.business_id') : null;
-            if (!$business_id) {
-                if (!$transaction = Transaction::find($transaction_id)) {
-                    abort(422, 'Transaction not found!');
-                }
-                $business_id = $transaction->business_id;
-            }
+            $business_id = $request->hasSession() ? $request->session()->get('user.business_id') : null;
 
-            $transaction = Transaction::where('business_id', $business_id)
-                            ->where('id', $transaction_id)
-                            ->with(['location'])
-                            ->first();
+            $transaction = Transaction::where('id', $transaction_id)
+                ->when($business_id, function ($query) use ($business_id) {
+                    $query->where('business_id', $business_id);
+                })
+                ->with(['location'])
+                ->first();
 
             if (empty($transaction)) {
                 return $output;
             }
 
+            $business_id = $transaction->business_id;
+                
             $printer_type = 'browser';
             if (! empty(request()->input('check_location')) && request()->input('check_location') == true) {
                 $printer_type = $transaction->location->receipt_printer_type;
