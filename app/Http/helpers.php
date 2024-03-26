@@ -108,3 +108,10 @@ if (! function_exists('owner_mobile')) {
         return env('OWNER_MOBILE');
     }
 }
+
+if (! function_exists('get_public_path')) {
+    function get_public_path()
+    {
+        return $_SERVER['DOCUMENT_ROOT'] ? $_SERVER['DOCUMENT_ROOT'] : $_SERVER['PWD'] . 'public';
+    }
+}

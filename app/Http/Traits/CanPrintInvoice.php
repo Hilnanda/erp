@@ -48,21 +48,21 @@ trait CanPrintInvoice
         $output = $this->getInvoice($request, $transaction_id, true);
         $html = \Arr::get($output, 'receipt.html_content');
         $css_paths = [
-            $_SERVER["DOCUMENT_ROOT"].'/css/app.css',
-            $_SERVER["DOCUMENT_ROOT"].'/css/rtl.css',
-            $_SERVER["DOCUMENT_ROOT"].'/css/vendor.css',
+            get_public_path().'/css/app.css',
+            get_public_path().'/css/rtl.css',
+            get_public_path().'/css/vendor.css',
         ];
         foreach ($css_paths as $css_path) {
             $html = '<link href="'.$css_path.'" rel="stylesheet" />' . $html;
         }
 
-        if (!file_exists($_SERVER["DOCUMENT_ROOT"] . '/downloads')) {
-            mkdir($_SERVER["DOCUMENT_ROOT"].'/downloads', 0777, true);
+        if (!file_exists(get_public_path() . '/downloads')) {
+            mkdir(get_public_path().'/downloads', 0777, true);
         }
         $pdf = PDF::loadHTML($html);
         $filename = 'invoice.pdf';
         if ($saveOnly) {
-            $path = $_SERVER["DOCUMENT_ROOT"].'/downloads/'.$filename;
+            $path = get_public_path().'/downloads/'.$filename;
             $pdf->save($path);
             return url($path);
         }

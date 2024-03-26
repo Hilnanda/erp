@@ -1011,7 +1011,7 @@ class TransactionUtil extends Util
 
         //Logo
         $output['logo'] = $il->show_logo != 0 && ! empty($il->logo) && file_exists(public_path('uploads/invoice_logos/'.$il->logo)) ? asset('uploads/invoice_logos/'.$il->logo) : false;
-        $output['logo_abs'] = $il->show_logo != 0 && ! empty($il->logo) && file_exists(public_path('uploads/invoice_logos/'.$il->logo)) ? $_SERVER["DOCUMENT_ROOT"].'/uploads/invoice_logos/'.$il->logo : false;
+        $output['logo_abs'] = $il->show_logo != 0 && ! empty($il->logo) && file_exists(public_path('uploads/invoice_logos/'.$il->logo)) ? get_public_path().'/uploads/invoice_logos/'.$il->logo : false;
 
         //Address
         $output['address'] = '';
