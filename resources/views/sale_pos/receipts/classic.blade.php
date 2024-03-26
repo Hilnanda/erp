@@ -691,7 +691,7 @@ $col_size = $is_download ? 'col' : 'col-xs';
 </div>
 <div class="row" style="color: #000000 !important;">
 	@if(!empty($receipt_details->footer_text))
-	<div class="@if($receipt_details->show_barcode || $receipt_details->show_qr_code) {{$col_size}}-8 @else {{$col_size}}-12 @endif">
+	<div class="@if($receipt_details->show_barcode || $receipt_details->show_qr_code) {{$col_size}}-8 @else {{$col_size}}-12 @endif text-left">
 		{!! $receipt_details->footer_text !!}
 	</div>
 	@endif
