@@ -199,6 +199,8 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Nwidart\Menus\MenusServiceProvider::class,
         Knox\Pesapal\PesapalServiceProvider::class,
+
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -224,5 +226,6 @@ return [
         'Redis' => Illuminate\Support\Facades\Redis::class,
         'Menu' => Nwidart\Menus\Facades\Menu::class,
         'Pesapal' => Knox\Pesapal\Facades\Pesapal::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 ];

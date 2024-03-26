@@ -13,6 +13,7 @@ use App\Events\TransactionPaymentDeleted;
 use App\Events\TransactionPaymentUpdated;
 use App\Exceptions\AdvanceBalanceNotAvailable;
 use App\Exceptions\PurchaseSellMismatch;
+use App\Http\Traits\CanPrintInvoice;
 use App\InvoiceScheme;
 use App\Product;
 use App\PurchaseLine;
@@ -31,6 +32,7 @@ use Illuminate\Support\Str;
 class TransactionUtil extends Util
 {
     use WhatsappNotification;
+    use CanPrintInvoice;
 
     /**
      * Add Sell transaction
@@ -1009,6 +1011,7 @@ class TransactionUtil extends Util
 
         //Logo
         $output['logo'] = $il->show_logo != 0 && ! empty($il->logo) && file_exists(public_path('uploads/invoice_logos/'.$il->logo)) ? asset('uploads/invoice_logos/'.$il->logo) : false;
+        $output['logo_abs'] = $il->show_logo != 0 && ! empty($il->logo) && file_exists(public_path('uploads/invoice_logos/'.$il->logo)) ? $_SERVER["DOCUMENT_ROOT"].'/uploads/invoice_logos/'.$il->logo : false;
 
         //Address
         $output['address'] = '';

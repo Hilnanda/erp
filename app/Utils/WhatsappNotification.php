@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Addons\LSenderAddon;
+use Illuminate\Http\Request;
 
 trait WhatsappNotification
 {
@@ -51,6 +52,10 @@ trait WhatsappNotification
             . $this->newLine
             . $this->newLine . '*NOTE : Pembayaran dianggap sah apabila di lakukan melalui transfer ke nomor rekening yang tertera pada invoice*';
 
+        if (env('REMINDER_WITH_MEDIA', 0)) {
+            $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
+            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        }
         return $this->sendWhatsappText($receiver, $message);
     }
 
@@ -84,6 +89,10 @@ trait WhatsappNotification
             . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true)
             . $this->newLine . 'Belum Terbayar : ' . $transactionUtil->num_f($total_payable, true);
 
+        if (env('REMINDER_WITH_MEDIA', 0)) {
+            $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
+            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        }
         return $this->sendWhatsappText($receiver, $message);
     }
 
@@ -112,6 +121,10 @@ trait WhatsappNotification
             . $this->newLine . 'Total : ' . $transactionUtil->num_f($payment->amount, true)
             . $this->newLine . 'Metode Pembayaran : ' . $metode;
 
+        if (env('REMINDER_WITH_MEDIA', 0)) {
+            $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
+            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        }
         return $this->sendWhatsappText($receiver, $message);
     }
 
@@ -161,6 +174,10 @@ trait WhatsappNotification
             . $this->newLine
             . $this->newLine . '*NOTE : Pembayaran dianggap sah apabila di lakukan melalui transfer ke nomor rekening yang tertera pada invoice*';
 
+        if (env('REMINDER_WITH_MEDIA', 0)) {
+            $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
+            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        }
         return $this->sendWhatsappText($receiver, $message);
     }
 }
