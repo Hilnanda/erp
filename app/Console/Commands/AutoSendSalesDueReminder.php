@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Business;
 use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class AutoSendSalesDueReminder extends Command
@@ -48,20 +49,25 @@ class AutoSendSalesDueReminder extends Command
 
             $businesses = Business::where('is_active', 1)->get();
             
+            $due_in_days = (int) env('REMINDER_DUE_DAY', 3);
             $count = 0;
             foreach ($businesses as $business) {
-                $reminderDate = now($business->time_zone)->addDays(env('REMINDER_DUE_DAY', 3));
+                $reminderDate = now($business->time_zone)->addDays($due_in_days);
 
                 $salesList = Transaction::where('business_id', $business->id)
                     ->where('type', 'sell')
                     ->where('payment_status', '!=', 'paid')
                     ->whereRaw("IF(pay_term_type = 'days',
-                        DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number DAY)) = DATE('" . $reminderDate ."'),
-                        DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number MONTH)) = DATE('" . $reminderDate . "')
+                        DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number DAY)) <= DATE('" . $reminderDate ."'),
+                        DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number MONTH)) <= DATE('" . $reminderDate . "')
                         )")
                     ->get();
 
                 foreach ($salesList as $sales) {
+                    $dueDate = Carbon::parse($sales->due_date);
+                    if (!($dueDate->diffInDays($reminderDate) % $due_in_days)) {
+                        continue;
+                    }
                     event(new \App\Events\SalesOrderDue($sales));
                     $count++;
                     if ($count == env('REMINDER_DUE_INTERVAL', 10)) {

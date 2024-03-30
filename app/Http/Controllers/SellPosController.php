@@ -322,6 +322,22 @@ class SellPosController extends Controller
             return redirect()->action([\App\Http\Controllers\CashRegisterController::class, 'create']);
         }
 
+        // verify customer lock
+        $contact_id = $request->get('contact_id', null);
+        $contact = \App\Contact::find($contact_id);
+        if ($contact->is_locked) {
+            $output = ['success' => 0,
+                'msg' => 'Customer is locked.',
+            ];
+            if (! $is_direct_sale) {
+                return $output;
+            } else {
+                return redirect()
+                    ->action([\App\Http\Controllers\SellController::class, 'index'])
+                    ->with('status', $output);
+            }
+        }
+
         try {
             $input = $request->except('_token');
 
@@ -400,7 +416,6 @@ class SellPosController extends Controller
                 }
 
                 //Customer group details
-                $contact_id = $request->get('contact_id', null);
                 $cg = $this->contactUtil->getCustomerGroup($business_id, $contact_id);
                 $input['customer_group_id'] = (empty($cg) || empty($cg->id)) ? null : $cg->id;
 

@@ -106,7 +106,7 @@ trait WhatsappNotification
     {
         $transactionUtil = new \App\Utils\TransactionUtil;
         $customer = $transaction->contact;
-        $receiver = owner_mobile();
+        $receivers = [owner_mobile(), $customer?->mobile];
         $paid_amount = $transactionUtil->getTotalPaid($transaction->id);
         $status = $paid_amount == $transaction->final_total ? 'Lunas' : 'Sebagian';
         $payment_types = $transactionUtil->payment_types(null, false, $business_id);
@@ -121,11 +121,16 @@ trait WhatsappNotification
             . $this->newLine . 'Total : ' . $transactionUtil->num_f($payment->amount, true)
             . $this->newLine . 'Metode Pembayaran : ' . $metode;
 
-        if (env('REMINDER_WITH_MEDIA', 0)) {
-            $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
-            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        $responses = [];
+        foreach ($receivers as $receiver) {
+            if (env('REMINDER_WITH_MEDIA', 0)) {
+                $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
+                array_push($responses, $this->sendWhatsappMedia($receiver, $media_url, 'file', $message));
+            } else {
+                array_push($responses, $this->sendWhatsappText($receiver, $message));
+            }
         }
-        return $this->sendWhatsappText($receiver, $message);
+        return $responses;
     }
 
     /**

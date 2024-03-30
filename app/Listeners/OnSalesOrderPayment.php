@@ -29,8 +29,14 @@ class OnSalesOrderPayment
         $payment = $event->payment;
         $business_id = $event->business_id;
 
-        $response = $this->transactionUtil->whatsappNotifySalesPayment($transaction, $payment, $business_id);
+        $responses = $this->transactionUtil->whatsappNotifySalesPayment($transaction, $payment, $business_id);
 
-        $this->transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
+        if (!is_array($responses)) {
+            $responses = [$responses];
+        }
+
+        foreach ($responses as $response) {
+            $this->transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
+        }
     }
 }

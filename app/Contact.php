@@ -89,6 +89,27 @@ class Contact extends Authenticatable
     }
 
     /**
+     * Filters only locked or not locked customers
+     */
+    public function scopeLockedCustomers($query, $isLocked = true)
+    {
+        $operator = $isLocked ? '>' : '<=';
+        $query->whereIn('contacts.type', ['customer', 'both']);
+
+        $query->whereHas('salesOrders', function ($query) use ($operator) {
+            $now = now($this->business->time_zone);
+            $query->whereRaw("IF(pay_term_type = 'days',
+                DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number DAY)) ".$operator." DATE('" . $now ."'),
+                DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number MONTH)) ".$operator." DATE('" . $now . "')
+                )")
+                ->where('payment_status', '!=', 'paid');
+        })
+        ->orWhereDoesntHave('salesOrders');
+
+        return $query;
+    }
+
+    /**
      * Filters only own created contact or has access to the contact
      */
     public function scopeOnlyOwnContact($query)
@@ -387,5 +408,30 @@ class Contact extends Authenticatable
     public function userHavingAccess()
     {
         return $this->belongsToMany(\App\User::class, 'user_contact_access');
+    }
+
+    /**
+     * Get all of the sales orders for the contact.
+     */
+    public function salesOrders()
+    {
+        return $this->hasMany(\App\Transaction::class)->where('type', \App\Transaction::TYPE_SELL);
+    }
+
+    /**
+     * Get the contacts's is_locked value.
+     *
+     * @return string
+     */
+    public function getIsLockedAttribute()
+    {
+        if (!$this->salesOrders->count()) {
+            return false;
+        }
+        $now = now($this->business->time_zone);
+        return $this->salesOrders()->whereRaw("IF(pay_term_type = 'days',
+                DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number DAY)) <= DATE('" . $now ."'),
+                DATE(DATE_ADD(transaction_date, INTERVAL pay_term_number MONTH)) <= DATE('" . $now . "')
+            )")->where('payment_status', '!=', 'paid')->count() ? true : false;
     }
 }
