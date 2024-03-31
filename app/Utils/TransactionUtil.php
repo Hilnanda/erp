@@ -13,6 +13,7 @@ use App\Events\TransactionPaymentDeleted;
 use App\Events\TransactionPaymentUpdated;
 use App\Exceptions\AdvanceBalanceNotAvailable;
 use App\Exceptions\PurchaseSellMismatch;
+use App\Http\Traits\CanPrintInvoice;
 use App\InvoiceScheme;
 use App\Product;
 use App\PurchaseLine;
@@ -30,6 +31,9 @@ use Illuminate\Support\Str;
 
 class TransactionUtil extends Util
 {
+    use WhatsappNotification;
+    use CanPrintInvoice;
+
     /**
      * Add Sell transaction
      *
@@ -1007,6 +1011,7 @@ class TransactionUtil extends Util
 
         //Logo
         $output['logo'] = $il->show_logo != 0 && ! empty($il->logo) && file_exists(public_path('uploads/invoice_logos/'.$il->logo)) ? asset('uploads/invoice_logos/'.$il->logo) : false;
+        $output['logo_abs'] = $il->show_logo != 0 && ! empty($il->logo) && file_exists(public_path('uploads/invoice_logos/'.$il->logo)) ? get_public_path().'/uploads/invoice_logos/'.$il->logo : false;
 
         //Address
         $output['address'] = '';
@@ -5017,7 +5022,7 @@ class TransactionUtil extends Util
      * @param  int  $business_id
      * @return object
      */
-    public function getListSells($business_id, $sale_type = 'sell')
+    public function getListSells($business_id = null, $sale_type = 'sell')
     {
         $sells = Transaction::leftJoin('contacts', 'transactions.contact_id', '=', 'contacts.id')
                 // ->leftJoin('transaction_payments as tp', 'transactions.id', '=', 'tp.transaction_id')
@@ -5047,7 +5052,9 @@ class TransactionUtil extends Util
                     '=',
                     'tos.id'
                 )
-                ->where('transactions.business_id', $business_id)
+                ->when($business_id, function ($query) use ($business_id) {
+                    $query->where('transactions.business_id', $business_id);
+                })
                 ->where('transactions.type', $sale_type)
                 ->select(
                     'transactions.id',

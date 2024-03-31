@@ -125,6 +125,7 @@ class TransactionPaymentController extends Controller
 
                     $inputs['transaction_type'] = $transaction->type;
                     event(new TransactionPaymentAdded($tp, $inputs));
+                    event(new \App\Events\SalesOrderPayment($transaction, $tp, $business_id));
                 }
 
                 //update payment status

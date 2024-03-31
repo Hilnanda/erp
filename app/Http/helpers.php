@@ -101,3 +101,17 @@ if (! function_exists('str_ordinal')) {
         return number_format($number).$suffix;
     }
 }
+
+if (! function_exists('owner_mobile')) {
+    function owner_mobile()
+    {
+        return env('OWNER_MOBILE');
+    }
+}
+
+if (! function_exists('get_public_path')) {
+    function get_public_path()
+    {
+        return isset($_SERVER['PWD']) && $_SERVER['PWD'] ? $_SERVER['PWD'] . '/public' : $_SERVER['DOCUMENT_ROOT'];
+    }
+}

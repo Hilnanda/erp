@@ -60,7 +60,7 @@
                   {!! Form::text('contact_id', $contact->contact_id, ['class' => 'form-control','placeholder' => __('lang_v1.contact_id')]); !!}
               </div>
               <p class="help-block">
-                @lang('lang_v1.leave_empty_to_autogenerate')
+                {{-- @lang('lang_v1.leave_empty_to_autogenerate') --}}
             </p>
           </div>
         </div>
