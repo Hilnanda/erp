@@ -28,7 +28,7 @@ trait LSenderAddon
             "data" => array("message" => $message),
         );
 
-        return $this->curlSend($body, "https://lsender.my.id/api/send-message");
+        return $this->curlSend($body, env('LSENDERAPISENDTEXT', 'https://lsender.my.id/app/api/single/message'));
     }
 
     /**
@@ -61,7 +61,7 @@ trait LSenderAddon
             ],
         );
 
-        return $this->curlSend($body, "https://lsender.my.id/api/send-media");
+        return $this->curlSend($body, env('LSENDERAPISENDMEDIA', 'https://lsender.my.id/app/api/single/message'));
     }
 
     /**
