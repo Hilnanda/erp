@@ -96,9 +96,9 @@ trait LSenderAddon
         curl_close($curl);
 
         if ($err) {
-            return "cURL Error #:" . $err;
+            return json_decode($err);
         } else {
-            return $response;
+            return json_decode($response);
         }
     }
 

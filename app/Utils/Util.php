@@ -1422,7 +1422,7 @@ class Util
         if ($log_changes) {
             $log_properties = $on->log_properties ?? [];
             foreach ($log_properties as $property) {
-                if (isset($on->$property)) {
+                if (isset($on->$property) && \Arr::get($properties, 'attributes.'.$property)) {
                     $properties['attributes'][$property] = $on->$property;
                 }
 
