@@ -26,9 +26,10 @@ trait WhatsappNotification
         $total_payable = $transaction->final_total - $paid_amount;
 
         $message = 'Dear ' . trim($customer?->name . ' ') . ','
-            . $this->newLine . 'Terima kasih telah bertransaksi di MAC'
+            . $this->newLine . 'Terima kasih telah melakukan transaksi pembelian produk di PT. MAC'
             . $this->newLine
             . $this->newLine . 'Tanggal : ' . $transactionUtil->format_date($transaction->transaction_date, true)
+            . $this->newLine . 'ME : ' . $transaction->added_by
             . $this->newLine . 'No Invoice : ' . $transaction->invoice_no
             . $this->newLine . 'Item : ' . ($transaction->sell_lines->count() == 1 ? $transaction->sell_lines->first()->product->name : '');
 
@@ -42,8 +43,9 @@ trait WhatsappNotification
             . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true)
             . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true)
             . $this->newLine . 'Belum Terbayar : ' . $transactionUtil->num_f($total_payable, true)
+            . $this->newLine . 'Jatuh Tempo : ' . $transactionUtil->format_date($transaction->transaction_date)
             . $this->newLine
-            . $this->newLine . 'Jika belum melakukan pembayaran silahkan transfer ke rekening di bawah sebelum ' . $transactionUtil->format_date($transaction->due_date, true)
+            . $this->newLine . 'Anda dapat melakukan pembayaran melalui transfer ke rekening di bawah sebelum ' . $transactionUtil->format_date($transaction->due_date, true)
             . $this->newLine
             . $this->newLine . 'BCA : 316-034-5470'
             . $this->newLine . 'a/n. Ayu Hani Hartiana'
@@ -113,13 +115,17 @@ trait WhatsappNotification
         $metode = $payment_types[$payment->method];
 
         $message = '*Reminder Pembayaran SO*'
-            . $this->newLine . 'Pembayaran ' . $status . ' telah dilakukan'
+            . $this->newLine . 'Dear ' . trim($customer?->name . ' ') . ','
+            . $this->newLine
+            . $this->newLine . 'Terima kasih anda telah melakukan pembayaran invoice pada,'
             . $this->newLine
             . $this->newLine . 'Tanggal : ' . $transactionUtil->format_date($payment->created_at, true)
             . $this->newLine . 'Customer : ' . $customer->name
             . $this->newLine . 'No Invoice : ' . $transaction->invoice_no
             . $this->newLine . 'Total : ' . $transactionUtil->num_f($payment->amount, true)
-            . $this->newLine . 'Metode Pembayaran : ' . $metode;
+            . $this->newLine . 'Metode Pembayaran : ' . $metode
+            . $this->newLine
+            . $this->newLine . 'Terima kasih atas kepercayaan anda pada PT.MAC';
 
         $responses = [];
         foreach ($receivers as $receiver) {

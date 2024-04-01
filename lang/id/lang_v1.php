@@ -87,6 +87,7 @@ return [
     'calculation_percentage' => 'Persentase Perhitungan (%)',
     'tooltip_calculation_percentage' => '<b>Harga jual = Harga jual Ditentukan untuk produk + Persentase kalkulasi </b> <br/> <br/> Anda dapat menentukan persentase sebagai positif untuk menaikan dan negatif untuk menurunkan harga jual.',
     'success' => 'Berhasil',
+    'failed' => 'Gagal',
     'edit_customer_group' => 'Edit Grup Pelanggan',
     'customer_groups_report' => 'Laporan Grup Pelanggan',
     'none' => 'Tidak ada',
@@ -1355,4 +1356,5 @@ return [
     'enable_purchase_print_logo' => 'Tampilkan Logo',
     'logo' => 'Logo',
     'add_document' => 'Tampilkan Lampiran Dokumen',
+    'whatsapp_notification' => 'Notifikasi Whatsapp',
 ];
