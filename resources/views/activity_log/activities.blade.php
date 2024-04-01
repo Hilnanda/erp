@@ -51,15 +51,18 @@
                 @endif
 
                 @if($activity->description == 'whatsapp_notification')
+                    @php
+                    $isSuccess = $activity->getExtraProperty('status') || $activity->getExtraProperty('message') == 'Message sent.';
+                    @endphp
                     <div>
                         <b>Status: </b>
-                        <span class="label bg-{{$activity->getExtraProperty('status') ? 'light-green' : 'red'}}">
-                            {{$activity->getExtraProperty('status') ? __('lang_v1.success') : __('lang_v1.failed')}}
+                        <span class="label bg-{{$isSuccess ? 'light-green' : 'red'}}">
+                            {{$isSuccess ? __('lang_v1.success') : __('lang_v1.failed')}}
                         </span>
                     </div>
                     <div>
                         <b>{{__('lang_v1.description')}}: </b>
-                        <span class="label bg-{{$activity->getExtraProperty('status') ? 'light-green' : 'red'}}">
+                        <span class="label bg-{{$isSuccess ? 'light-green' : 'red'}}">
                             {{$activity->getExtraProperty('message')}}
                         </span>
                     </div>
