@@ -49,6 +49,21 @@
                 @if(!empty($activity->getExtraProperty('mobile')))
                     <b>@lang('business.mobile'): </b> {{$activity->getExtraProperty('mobile')}}
                 @endif
+
+                @if($activity->description == 'whatsapp_notification')
+                    <div>
+                        <b>Status: </b>
+                        <span class="label bg-{{$activity->getExtraProperty('status') ? 'light-green' : 'red'}}">
+                            {{$activity->getExtraProperty('status') ? __('lang_v1.success') : __('lang_v1.failed')}}
+                        </span>
+                    </div>
+                    <div>
+                        <b>{{__('lang_v1.description')}}: </b>
+                        <span class="label bg-{{$activity->getExtraProperty('status') ? 'light-green' : 'red'}}">
+                            {{$activity->getExtraProperty('message')}}
+                        </span>
+                    </div>
+                @endif
             </td>
         </tr>
     @empty

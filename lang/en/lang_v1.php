@@ -87,6 +87,7 @@ return [
     'calculation_percentage' => 'Calculation Percentage (%)',
     'tooltip_calculation_percentage' => '<b>Selling price = Selling price Set For the product + Calculation percentage </b> <br/><br/> You can specify percentage as positive to increase and negtive to decrease selling price.',
     'success' => 'Success',
+    'failed' => 'Failed',
     'edit_customer_group' => 'Edit Customer Group',
     'customer_groups_report' => 'Customer Groups Report',
     'none' => 'None',
@@ -1538,4 +1539,5 @@ return [
     'kitchen_order_tooltip' => 'Order will be sent to kitchen only if this option is checked',
     'disable_quotation' => 'Disable Quotation',
     'disable_card' => 'Disable Card',
+    'whatsapp_notification' => 'Whatsapp Notification',
 ];
