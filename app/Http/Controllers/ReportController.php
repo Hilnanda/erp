@@ -2359,6 +2359,7 @@ class ReportController extends Controller
                     $q->whereRaw("(transaction_payments.transaction_id IS NOT NULL AND t.type IN ('sell', 'opening_balance') $parent_payment_query_part $contact_filter1)")
                         ->orWhereRaw("EXISTS(SELECT * FROM transaction_payments as tp JOIN transactions ON tp.transaction_id = transactions.id WHERE transactions.type IN ('sell', 'opening_balance') AND transactions.business_id = $business_id AND tp.parent_id=transaction_payments.id $contact_filter2)");
                 })
+                ->where('transaction_payments.amount', '!=', 0)
                 ->select(
                     DB::raw("IF(transaction_payments.transaction_id IS NULL, 
                                 (SELECT c.name FROM transactions as ts
