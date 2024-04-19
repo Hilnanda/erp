@@ -659,6 +659,7 @@ return [
     'total_purchase_price' => 'Total purchase price',
     'total_sell_price' => 'Total sell price',
     'packing_slip' => 'Packing Slip',
+    'send_wa_notification' => 'Send Whatsapp Notification',
     'use_superadmin_email_settings' => 'Use system email configurations',
     'profit_by_products' => 'Profit by products',
     'profit_by_categories' => 'Profit by categories',
@@ -1540,4 +1541,5 @@ return [
     'disable_quotation' => 'Disable Quotation',
     'disable_card' => 'Disable Card',
     'whatsapp_notification' => 'Whatsapp Notification',
+    'unknown_error' => 'Unknown Error, possibly due to a disconnected account',
 ];

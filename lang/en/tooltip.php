@@ -73,6 +73,8 @@ return [
 
     'invoice_scheme_count' => 'Total number of invoices generated for the Invoice Scheme',
 
+    'invoice_scheme_count_per_month' => 'Total number of invoices generated for the Invoice Scheme this month',
+
     'invoice_scheme_total_digits' => 'Length of the Invoice Number excluding Invoice Prefix',
 
     'tax_groups' => 'Group Tax Rates - defined above, to be used in combination in Purchase/Sell sections.',

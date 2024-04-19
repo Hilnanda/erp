@@ -2358,15 +2358,24 @@ class TransactionUtil extends Util
         }
 
         if ($scheme->scheme_type == 'custom') {
+            $template = Arr::get($common_settings, 'custom_invoice_number');
+            
             if ($scheme->number_type == 'sequential') {
-                $count = $scheme->start_number + $scheme->invoice_count;
+                if (\Str::contains($template, ['%month%', '%year%']) && now($business->time_zone) >= \Carbon\Carbon::parse('2024-05-01', $business->time_zone)) {
+                    $invoice_count_per_month = $this->getInvoiceNumberThisMonth($business);
+                    $count = $scheme->start_number + $invoice_count_per_month;
+                    if (!$scheme->start_number && !$invoice_count_per_month) {
+                        $count++;
+                    }
+                } else {
+                    $count = $scheme->start_number + $scheme->invoice_count;
+                }
             } elseif ($scheme->number_type == 'random') {
                 $max = (int)str_pad(1, $scheme->total_digits, '1');
                 $count = rand(1000, 9 * $max);
             }
             $count = str_pad($count, $scheme->total_digits, '0', STR_PAD_LEFT);
 
-            $template = Arr::get($common_settings, 'custom_invoice_number');
             $date = now();
             $month = date_format($date, 'm');
             $year = date_format($date, 'Y');
@@ -2379,6 +2388,15 @@ class TransactionUtil extends Util
         }
 
         return $invoice_no;
+    }
+
+    public function getInvoiceNumberThisMonth($business)
+    {
+        $now = now($business->time_zone);
+        return Transaction::where('business_id', $business->id)
+            ->whereRaw("MONTH(created_at) = ". $now->month ."
+                AND YEAR(created_at) = ". $now->year)
+            ->count();
     }
 
     private function getInvoiceScheme($business_id, $location_id)

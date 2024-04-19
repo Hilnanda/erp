@@ -504,6 +504,7 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone'])
     Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
     Route::get('/download-purchase-order/{id}/pdf', [PurchaseOrderController::class, 'downloadPdf'])->name('purchaseOrder.downloadPdf');
     Route::get('/sells/{id}', [SellController::class, 'show']);
+    Route::get('/sells/{transaction_id}/send-whatsapp-notification', [SellPosController::class, 'sendWhatsappNotification'])->name('sell.sendWhatsappNotification');
     Route::get('/sells/{transaction_id}/print', [SellPosController::class, 'printInvoice'])->name('sell.printInvoice');
     Route::get('/sells/{transaction_id}/download', [SellPosController::class, 'downloadInvoice'])->name('sell.downloadInvoice');
     Route::get('/sells/{transaction_id}/save', [SellPosController::class, 'saveInvoice'])->name('sell.saveInvoice');

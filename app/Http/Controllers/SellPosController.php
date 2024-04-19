@@ -2981,4 +2981,32 @@ class SellPosController extends Controller
 
         return ['success' => true];
     }
+
+    /**
+     * Send whatsapp notification
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sendWhatsappNotification(Request $request, $transaction_id)
+    {
+        $business_id = $request->hasSession() ? $request->session()->get('user.business_id') : null;
+
+        $transaction = Transaction::where('id', $transaction_id)
+            ->when($business_id, function ($query) use ($business_id) {
+                $query->where('business_id', $business_id);
+            })
+            ->with(['location'])
+            ->first();
+
+        $response = event(new \App\Events\SalesOrderCreated($transaction));
+
+        $message = is_array($response) ? $response[0]->message : $response?->message;
+        $output = [
+            'success' => $message == 'Message sent.' ? 1 : 0,
+            'msg' => $message ?? __('lang_v1.unknown_error'),
+        ];
+
+        return redirect()->action([\App\Http\Controllers\SellController::class, 'index'])->with('status', $output);
+    }
 }
