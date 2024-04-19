@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Business;
 use App\InvoiceLayout;
 use App\InvoiceScheme;
+use App\Transaction;
+use App\Utils\TransactionUtil;
 use Datatables;
 use Illuminate\Http\Request;
 
@@ -29,9 +31,21 @@ class InvoiceSchemeController extends Controller
         }
 
         $business_id = request()->session()->get('user.business_id');
+        $business = Business::find($business_id);
         if (request()->ajax()) {
             $schemes = InvoiceScheme::where('business_id', $business_id)
-                            ->select(['id', 'name', 'scheme_type', 'prefix', 'number_type', 'start_number', 'invoice_count', 'total_digits', 'is_default']);
+                            ->select([
+                                'id',
+                                'name',
+                                'scheme_type',
+                                'prefix',
+                                'number_type',
+                                'start_number',
+                                'invoice_count',
+                                \DB::raw('invoice_count as invoice_count_per_month'),
+                                'total_digits',
+                                'is_default',
+                            ]);
 
             return Datatables::of($schemes)
                 ->addColumn(
@@ -63,10 +77,13 @@ class InvoiceSchemeController extends Controller
                         return $row->name;
                     }
                 })
+                ->editColumn('invoice_count_per_month', function ($row) use ($business) {
+                    return (new TransactionUtil)->getInvoiceNumberThisMonth($business);
+                })
                 ->removeColumn('id')
                 ->removeColumn('is_default')
                 ->removeColumn('scheme_type')
-                ->rawColumns([6, 0])
+                ->rawColumns([7, 0])
                 ->make(false);
         }
 

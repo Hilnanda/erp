@@ -72,6 +72,8 @@ return [
 
     'invoice_scheme_count' => 'Jumlah total faktur yang dihasilkan untuk Skema Faktur',
 
+    'invoice_scheme_count_per_month' => 'Jumlah total faktur yang dihasilkan untuk Skema Faktur bulan ini',
+
     'invoice_scheme_total_digits' => 'Panjang Nomor Faktur tidak termasuk Awalan Faktur',
 
     'tax_groups' => 'Tarif Grup Pajak - ditentukan di atas, untuk digunakan dalam kombinasi di bagian Pembelian/Jual.',

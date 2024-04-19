@@ -25,6 +25,7 @@ return [
     'preview' => 'Preview',
     'not_selected' => 'Not selected',
     'invoice_count' => 'Invoice Count',
+    'invoice_count_per_month' => 'Invoice Count Per Month',
     'invoice_schemes' => 'Invoice Schemes',
     'invoice_layouts' => 'Invoice Layouts',
     'invoice_layout' => 'Invoice layout',

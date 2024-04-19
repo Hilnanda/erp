@@ -414,6 +414,7 @@
   </div>
   <div class="modal-footer">
     @if($sell->type != 'sales_order')
+    <a href="{{route('sell.sendWhatsappNotification', [$sell->id])}}" class="send-invoice btn btn-info"><i class="fas fa-paper-plane" aria-hidden="true"></i> @lang("lang_v1.send_wa_notification")</a>
     <a href="#" class="print-invoice btn btn-success" data-href="{{route('sell.printInvoice', [$sell->id])}}?package_slip=true"><i class="fas fa-file-alt" aria-hidden="true"></i> @lang("lang_v1.packing_slip")</a>
     @endif
     @can('print_invoice')

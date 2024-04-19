@@ -437,6 +437,8 @@ class SellController extends Controller
                             }
 
                             $html .= '<li><a href="#" data-href="'.action([\App\Http\Controllers\NotificationController::class, 'getTemplate'], ['transaction_id' => $row->id, 'template_for' => 'new_sale']).'" class="btn-modal" data-container=".view_modal"><i class="fa fa-envelope" aria-hidden="true"></i>'.__('lang_v1.new_sale_notification').'</a></li>';
+
+                            $html .= '<li><a href="'.route('sell.sendWhatsappNotification', [$row->id]).'"><i class="fas fa-paper-plane" aria-hidden="true"></i> '.__('lang_v1.send_wa_notification').'</a></li>';
                         } else {
                             $html .= '<li><a href="#" data-href="'.action([\App\Http\Controllers\SellController::class, 'viewMedia'], ['model_id' => $row->id, 'model_type' => \App\Transaction::class, 'model_media_type' => 'shipping_document']).'" class="btn-modal" data-container=".view_modal"><i class="fas fa-paperclip" aria-hidden="true"></i>'.__('lang_v1.shipping_documents').'</a></li>';
                         }
@@ -572,6 +574,9 @@ class SellController extends Controller
                     return $status;
                 })
                 ->editColumn('so_qty_remaining', '{{@format_quantity($so_qty_remaining)}}')
+                ->filterColumn('due_date', function ($query, $keyword) {
+                    // Tidak melakukan apapun untuk mengabaikan pencarian pada kolom 'due_date'
+                })
                 ->setRowAttr([
                     'data-href' => function ($row) {
                         if (auth()->user()->can('sell.view') || auth()->user()->can('view_own_sell_only')) {
@@ -584,7 +589,7 @@ class SellController extends Controller
             $rawColumns = ['final_total', 'action', 'total_paid', 'total_remaining', 'payment_status', 'invoice_no', 'discount_amount', 'tax_amount', 'total_before_tax', 'shipping_status', 'types_of_service_name', 'payment_methods', 'return_due', 'conatct_name', 'status'];
 
             return $datatable->rawColumns($rawColumns)
-                      ->make(true);
+                    ->make(true);
         }
 
         $business_locations = BusinessLocation::forDropdown($business_id, false);

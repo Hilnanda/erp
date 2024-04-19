@@ -25,6 +25,7 @@ return [
     'preview' => 'Pratinjau',
     'not_selected' => 'Tidak terpilih',
     'invoice_count' => 'Hitungan Faktur',
+    'invoice_count_per_month' => 'Hitungan Faktur Per Bulan',
     'invoice_schemes' => 'Skema Faktur',
     'invoice_layouts' => 'Tata Letak Faktur',
     'invoice_layout' => 'Tata Letak Faktur',
