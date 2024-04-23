@@ -56,9 +56,13 @@ trait WhatsappNotification
 
         if (env('REMINDER_WITH_MEDIA', 0)) {
             $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
-            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+            $response = $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        } else {
+            $response = $this->sendWhatsappText($receiver, $message);
         }
-        return $this->sendWhatsappText($receiver, $message);
+
+        $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
+        return $response;
     }
 
     /**
@@ -93,9 +97,13 @@ trait WhatsappNotification
 
         if (env('REMINDER_WITH_MEDIA', 0)) {
             $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
-            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+            $response = $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        } else {
+            $response = $this->sendWhatsappText($receiver, $message);
         }
-        return $this->sendWhatsappText($receiver, $message);
+
+        $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
+        return $response;
     }
 
     /**
@@ -135,6 +143,14 @@ trait WhatsappNotification
             } else {
                 array_push($responses, $this->sendWhatsappText($receiver, $message));
             }
+        }
+
+        if (!is_array($responses)) {
+            $responses = [$responses];
+        }
+
+        foreach ($responses as $response) {
+            $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
         }
         return $responses;
     }
@@ -187,8 +203,12 @@ trait WhatsappNotification
 
         if (env('REMINDER_WITH_MEDIA', 0)) {
             $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
-            return $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+            $response = $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
+        } else {
+            $response = $this->sendWhatsappText($receiver, $message);
         }
-        return $this->sendWhatsappText($receiver, $message);
+
+        $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
+        return $response;
     }
 }

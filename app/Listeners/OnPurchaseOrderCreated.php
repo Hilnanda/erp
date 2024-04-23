@@ -27,8 +27,6 @@ class OnPurchaseOrderCreated
     {
         $transaction = $event->transaction;
 
-        $response = $this->transactionUtil->whatsappNotifyPurchaseCreated($transaction);
-
-        $this->transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
+        $this->transactionUtil->whatsappNotifyPurchaseCreated($transaction);
     }
 }
