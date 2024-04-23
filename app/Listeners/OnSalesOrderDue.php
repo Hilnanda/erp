@@ -27,8 +27,6 @@ class OnSalesOrderDue
     {
         $transaction = $event->transaction;
 
-        $response = $this->transactionUtil->whatsappNotifySalesDue($transaction);
-
-        $this->transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
+        $this->transactionUtil->whatsappNotifySalesDue($transaction);
     }
 }

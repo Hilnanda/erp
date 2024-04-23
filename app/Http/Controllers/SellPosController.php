@@ -2999,9 +2999,9 @@ class SellPosController extends Controller
             ->with(['location'])
             ->first();
 
-        $response = event(new \App\Events\SalesOrderCreated($transaction));
+        $response = $this->transactionUtil->whatsappNotifySalesCreated($transaction);
 
-        $message = is_array($response) ? $response[0]->message : $response?->message;
+        $message = $response?->message;
         $output = [
             'success' => $message == 'Message sent.' ? 1 : 0,
             'msg' => $message ?? __('lang_v1.unknown_error'),
