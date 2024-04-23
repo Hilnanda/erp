@@ -85,7 +85,7 @@ trait LSenderAddon
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_POSTFIELDS => json_encode($body),
             CURLOPT_HTTPHEADER => [
-                "Accept: */*",
+                "Accept: application/json",
                 "Content-Type: application/json",
             ],
         ]);
