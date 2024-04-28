@@ -32,7 +32,7 @@
                         }
                     }
                 @endphp
-                <input id="username" style="width: 475px" type="text" class="form-control" name="username" value="{{ $username }}" required autofocus placeholder="@lang('lang_v1.username')">
+                <input id="username" type="text" class="form-control" name="username" value="{{ $username }}" required autofocus placeholder="@lang('lang_v1.username')">
                 <span class="fa fa-user form-control-feedback"></span>
                 @if ($errors->has('username'))
                     <span class="help-block">
@@ -41,7 +41,7 @@
                 @endif
             </div>
             <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
-                <input id="password" style="width: 475px" type="password" class="form-control" name="password"
+                <input id="password" type="password" class="form-control" name="password"
                 value="{{ $password }}" required placeholder="@lang('lang_v1.password')">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 @if ($errors->has('password'))
@@ -61,9 +61,9 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-flat btn-login">@lang('lang_v1.login')</button>
                 @if(config('app.env') != 'demo')
-                {{-- <a href="{{ route('password.request') }}" class="pull-right">
+                <a href="{{ route('password.request') }}" class="pull-right">
                     @lang('lang_v1.forgot_your_password')
-                </a> --}}
+                </a>
             @endif
             </div>
         </form>
