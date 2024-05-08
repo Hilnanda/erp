@@ -418,9 +418,9 @@ $col_size = $is_download ? 'col' : 'col-xs';
 		<table class="table table-slim">
 			<tr>
 				<td>BCA : 316-034-5470 <br>
-					a/n. Ayu Hani Hartiana <br>
+					a/n. Ayu Nani Hartiana <br>
 					Mandiri : 141-00-2283-1812 <br>
-					a/n. Ayu Hani Hartiana</td>
+					a/n. Ayu Nani Hartiana</td>
 			</tr>
 			@if(!empty($receipt_details->payments))
 			

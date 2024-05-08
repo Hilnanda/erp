@@ -48,9 +48,9 @@ trait WhatsappNotification
             . $this->newLine . 'Anda dapat melakukan pembayaran melalui transfer ke rekening di bawah sebelum ' . $transactionUtil->format_date($transaction->due_date, true)
             . $this->newLine
             . $this->newLine . 'BCA : 316-034-5470'
-            . $this->newLine . 'a/n. Ayu Hani Hartiana'
+            . $this->newLine . 'a/n. Ayu Nani Hartiana'
             . $this->newLine . 'Mandiri : 141-00-2283-1812'
-            . $this->newLine . 'a/n. Ayu Hani Hartiana'
+            . $this->newLine . 'a/n. Ayu Nani Hartiana'
             . $this->newLine
             . $this->newLine . '*NOTE : Pembayaran dianggap sah apabila di lakukan melalui transfer ke nomor rekening yang tertera pada invoice*';
 
@@ -195,9 +195,9 @@ trait WhatsappNotification
             . $this->newLine . 'Mohon segera melakukan pembayaran ke rekening di bawah'
             . $this->newLine
             . $this->newLine . 'BCA : 316-034-5470'
-            . $this->newLine . 'a/n. Ayu Hani Hartiana'
+            . $this->newLine . 'a/n. Ayu Nani Hartiana'
             . $this->newLine . 'Mandiri : 141-00-2283-1812'
-            . $this->newLine . 'a/n. Ayu Hani Hartiana'
+            . $this->newLine . 'a/n. Ayu Nani Hartiana'
             . $this->newLine
             . $this->newLine . '*NOTE : Pembayaran dianggap sah apabila di lakukan melalui transfer ke nomor rekening yang tertera pada invoice*';
 
