@@ -263,6 +263,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's name.
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    /**
      * Return true/false based on selected_contact access
      *
      * @return bool

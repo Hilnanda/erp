@@ -611,7 +611,9 @@ class SellPosController extends Controller
 
                 $this->transactionUtil->activityLog($transaction, 'added');
 
-                event(new \App\Events\SalesOrderCreated($transaction));
+                if (env('WAAUTOONSOCREATED', false)) {
+                    event(new \App\Events\SalesOrderCreated($transaction));
+                }
 
                 DB::commit();
 

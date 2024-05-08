@@ -53,6 +53,11 @@ class Transaction extends Model
         return $this->belongsTo(\App\Contact::class, 'contact_id');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(\App\User::class, 'created_by');
+    }
+
     public function delivery_person_user()
     {
         return $this->belongsTo(\App\User::class, 'delivery_person');
@@ -141,6 +146,18 @@ class Transaction extends Model
         $path = ! empty($this->document) ? asset('/uploads/documents/'.$this->document) : null;
 
         return $path;
+    }
+
+    /**
+     * Retrieves creator name if exists
+     */
+    public function getAddedByAttribute()
+    {
+        if ($this->createdBy) {
+            return $this->createdBy->name;
+        }
+
+        return null;
     }
 
     /**
