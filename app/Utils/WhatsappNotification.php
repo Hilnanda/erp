@@ -29,7 +29,7 @@ trait WhatsappNotification
             . $this->newLine . 'Terima kasih telah melakukan transaksi pembelian produk di PT. MAC'
             . $this->newLine
             . $this->newLine . 'Tanggal : ' . $transactionUtil->format_date($transaction->transaction_date, true)
-            . $this->newLine . 'ME : ' . $transaction->added_by
+            . $this->newLine . 'ME : ' . $transaction->added_by_name
             . $this->newLine . 'No Invoice : ' . $transaction->invoice_no
             . $this->newLine . 'Item : ' . ($transaction->sell_lines->count() == 1 ? $transaction->sell_lines->first()->product->name : '');
 
