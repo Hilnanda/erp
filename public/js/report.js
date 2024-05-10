@@ -955,11 +955,12 @@ $(document).ready(function() {
                 { data: 'sell_qty', name: 'transaction_sell_lines.quantity' },
                 { data: 'unit_price', name: 'transaction_sell_lines.unit_price_before_discount' },
                 { data: 'discount_amount', name: 'transaction_sell_lines.line_discount_amount' },
+                { data: 'discount_global_amount', name: 't.discount_amount' },
                 { data: 'tax', name: 'tax_rates.name' },
                 { data: 'unit_sale_price', name: 'transaction_sell_lines.unit_price_inc_tax' },
                 { data: 'subtotal', name: 'subtotal', searchable: false },
                 { data: 'payment_methods', name: 'payment_methods', searchable: false },
-                { data: 'marketing_name', name: 'marketing_name', searchable: false },
+                { data: 'marketing_name', name: 'marketing.full_name' },
             ],
             fnDrawCallback: function(oSettings) {
                 $('#footer_subtotal').text(

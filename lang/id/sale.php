@@ -22,6 +22,7 @@ return [
     'total' => 'Total',
     'order_tax' => 'Pajak Pesanan',
     'discount' => 'Diskon',
+    'discount_global' => 'Diskon Global',
     'total_payable' => 'Total Hutang',
     'cancel' => 'Batal',
     'draft' => 'Sales Order Pending',
