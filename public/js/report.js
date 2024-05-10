@@ -959,6 +959,7 @@ $(document).ready(function() {
                 { data: 'unit_sale_price', name: 'transaction_sell_lines.unit_price_inc_tax' },
                 { data: 'subtotal', name: 'subtotal', searchable: false },
                 { data: 'payment_methods', name: 'payment_methods', searchable: false },
+                { data: 'marketing_name', name: 'marketing_name', searchable: false },
             ],
             fnDrawCallback: function(oSettings) {
                 $('#footer_subtotal').text(

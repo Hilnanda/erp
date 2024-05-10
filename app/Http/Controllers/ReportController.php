@@ -1759,6 +1759,7 @@ class ReportController extends Controller
                 ->join('products as p', 'pv.product_id', '=', 'p.id')
                 ->leftjoin('tax_rates', 'transaction_sell_lines.tax_id', '=', 'tax_rates.id')
                 ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
+                ->leftJoin('users as marketing', 't.created_by', 'marketing.id')
                 ->where('t.business_id', $business_id)
                 ->where('t.type', 'sell')
                 ->where('t.status', 'final')
@@ -1786,7 +1787,8 @@ class ReportController extends Controller
                     'tax_rates.name as tax',
                     'u.short_name as unit',
                     'transaction_sell_lines.parent_sell_line_id',
-                    DB::raw('((transaction_sell_lines.quantity - transaction_sell_lines.quantity_returned) * transaction_sell_lines.unit_price_inc_tax) as subtotal')
+                    DB::raw('((transaction_sell_lines.quantity - transaction_sell_lines.quantity_returned) * transaction_sell_lines.unit_price_inc_tax) as subtotal'),
+                    DB::raw('CONCAT(IFNULL(marketing.first_name, ""), " ", IFNULL(marketing.last_name, "")) as marketing_name'),
                 )
                 ->groupBy('transaction_sell_lines.id');
 
