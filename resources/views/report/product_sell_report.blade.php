@@ -129,6 +129,7 @@
                                         <th>@lang('sale.price_inc_tax')</th>
                                         <th>@lang('sale.total')</th>
                                         <th>@lang('lang_v1.payment_method')</th>
+                                        <th>Marketing</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -140,7 +141,7 @@
                                         <td id="footer_tax"></td>
                                         <td></td>
                                         <td><span class="display_currency" id="footer_subtotal" data-currency_symbol ="true"></span></td>
-                                        <td></td>
+                                        <td colspan="2"></td>
                                     </tr>
                                 </tfoot>
                             </table>
