@@ -151,7 +151,7 @@ class Transaction extends Model
     /**
      * Retrieves creator name if exists
      */
-    public function getAddedByAttribute()
+    public function getAddedByNameAttribute()
     {
         if ($this->createdBy) {
             return $this->createdBy->name;
