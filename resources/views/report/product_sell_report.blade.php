@@ -125,6 +125,7 @@
                                         <th>@lang('sale.qty')</th>
                                         <th>@lang('sale.unit_price')</th>
                                         <th>@lang('sale.discount')</th>
+                                        <th>@lang('sale.discount_global')</th>
                                         <th>@lang('sale.tax')</th>
                                         <th>@lang('sale.price_inc_tax')</th>
                                         <th>@lang('sale.total')</th>
@@ -136,6 +137,7 @@
                                     <tr class="bg-gray font-17 footer-total text-center">
                                         <td colspan="8"><strong>@lang('sale.total'):</strong></td>
                                         <td id="footer_total_sold"></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td id="footer_tax"></td>

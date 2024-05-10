@@ -1783,12 +1783,14 @@ class ReportController extends Controller
                     DB::raw('(transaction_sell_lines.quantity - transaction_sell_lines.quantity_returned) as sell_qty'),
                     'transaction_sell_lines.line_discount_type as discount_type',
                     'transaction_sell_lines.line_discount_amount as discount_amount',
+                    't.discount_type as discount_global_type',
+                    't.discount_amount as discount_global_amount',
                     'transaction_sell_lines.item_tax',
                     'tax_rates.name as tax',
                     'u.short_name as unit',
                     'transaction_sell_lines.parent_sell_line_id',
                     DB::raw('((transaction_sell_lines.quantity - transaction_sell_lines.quantity_returned) * transaction_sell_lines.unit_price_inc_tax) as subtotal'),
-                    DB::raw('CONCAT(IFNULL(marketing.first_name, ""), " ", IFNULL(marketing.last_name, "")) as marketing_name'),
+                    'marketing.full_name as marketing_name',
                 )
                 ->groupBy('transaction_sell_lines.id');
 
@@ -1860,6 +1862,11 @@ class ReportController extends Controller
                     $this->transactionUtil->num_f($row->sell_qty, false, null, true).'</span> '.$row->unit;
                 })
                  ->editColumn('subtotal', function ($row) {
+                    // if has discount global
+                    if ($amount = $row->discount_global_amount) {
+                        $discount = $row->discount_global_type == 'percentage' ? $amount / 100 * $row->subtotal : $amount;
+                        $row->subtotal = $row->subtotal - $discount;
+                    }
                      //ignore child sell line of combo product
                      $class = is_null($row->parent_sell_line_id) ? 'row_subtotal' : '';
 
@@ -1875,6 +1882,13 @@ class ReportController extends Controller
                         {{@num_format($discount_amount)}} %
                     @elseif($discount_type == "fixed")
                         {{@num_format($discount_amount)}}
+                    @endif
+                    ')
+                ->editColumn('discount_global_amount', '
+                    @if($discount_global_type == "percentage")
+                        {{@num_format($discount_global_amount)}} %
+                    @elseif($discount_global_type == "fixed")
+                        {{@num_format($discount_global_amount)}}
                     @endif
                     ')
                 ->editColumn('tax', function ($row) {
@@ -1897,7 +1911,7 @@ class ReportController extends Controller
                     return $html;
                 })
                 ->editColumn('customer', '@if(!empty($supplier_business_name)) {{$supplier_business_name}},<br>@endif {{$customer}}')
-                ->rawColumns(['invoice_no', 'unit_sale_price', 'subtotal', 'sell_qty', 'discount_amount', 'unit_price', 'tax', 'customer', 'payment_methods'])
+                ->rawColumns(['invoice_no', 'unit_sale_price', 'subtotal', 'sell_qty', 'discount_amount', 'unit_price', 'tax', 'customer', 'payment_methods', 'marketing_name'])
                 ->make(true);
         }
 

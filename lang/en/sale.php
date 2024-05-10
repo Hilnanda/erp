@@ -22,6 +22,7 @@ return [
     'total' => 'Total',
     'order_tax' => 'Order Tax',
     'discount' => 'Discount',
+    'discount_global' => 'Global Discount',
     'total_payable' => 'Total Payable',
     'cancel' => 'Cancel',
     'draft' => 'Draft',
