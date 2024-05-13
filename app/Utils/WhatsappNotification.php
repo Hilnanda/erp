@@ -122,8 +122,7 @@ trait WhatsappNotification
         $payment_types = $transactionUtil->payment_types(null, false, $business_id);
         $metode = $payment_types[$payment->method];
 
-        $message = '*Reminder Pembayaran SO*'
-            . $this->newLine . 'Dear ' . trim($customer?->name . ' ') . ','
+        $message = 'Dear ' . trim($customer?->name . ' ') . ','
             . $this->newLine
             . $this->newLine . 'Terima kasih anda telah melakukan pembayaran invoice pada,'
             . $this->newLine
