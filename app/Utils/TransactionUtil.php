@@ -2300,6 +2300,10 @@ class TransactionUtil extends Util
      */
     public function getInvoiceNumber($business_id, $status, $location_id, $invoice_scheme_id = null, $sale_type = null)
     {
+        if ($status != 'final' && config('erp.sell_invoice_final_only')) {
+            return null;
+        }
+
         if ($status == 'final') {
             if (empty($invoice_scheme_id)) {
                 $scheme = $this->getInvoiceScheme($business_id, $location_id);
@@ -2364,9 +2368,9 @@ class TransactionUtil extends Util
                 if (\Str::contains($template, ['%month%', '%year%']) && now($business->time_zone) >= \Carbon\Carbon::parse('2024-05-01', $business->time_zone)) {
                     $invoice_count_per_month = $this->getInvoiceNumberThisMonth($business);
                     $count = $scheme->start_number + $invoice_count_per_month;
-                    if (!$scheme->start_number && !$invoice_count_per_month) {
-                        $count++;
-                    }
+                    // if (!$scheme->start_number && !$invoice_count_per_month) {
+                    //     $count++;
+                    // }
                 } else {
                     $count = $scheme->start_number + $scheme->invoice_count;
                 }
@@ -2394,6 +2398,15 @@ class TransactionUtil extends Util
     {
         $now = now($business->time_zone);
         return Transaction::where('business_id', $business->id)
+            ->when(config('erp.sell_invoice_final_only'), function ($query) {
+                $query->where(function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('type', Transaction::TYPE_SELL)
+                            ->where('status', 'final');
+                    })
+                    ->orWhere('type', '!=', Transaction::TYPE_SELL);
+                });
+            })
             ->whereRaw("MONTH(created_at) = ". $now->month ."
                 AND YEAR(created_at) = ". $now->year)
             ->count();
