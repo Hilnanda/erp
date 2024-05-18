@@ -43,7 +43,7 @@ trait WhatsappNotification
             . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true)
             . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true)
             . $this->newLine . 'Belum Terbayar : ' . $transactionUtil->num_f($total_payable, true)
-            . $this->newLine . 'Jatuh Tempo : ' . $transactionUtil->format_date($transaction->transaction_date)
+            . $this->newLine . 'Jatuh Tempo : ' . $transactionUtil->format_date($transaction->due_date, true)
             . $this->newLine
             . $this->newLine . 'Anda dapat melakukan pembayaran melalui transfer ke rekening di bawah sebelum ' . $transactionUtil->format_date($transaction->due_date, true)
             . $this->newLine
