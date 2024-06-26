@@ -65,7 +65,7 @@
                             {{ $isSuccess ? __('lang_v1.success') : __('lang_v1.failed')}}
                         </span>
                         @if(!$isSuccess && $activity->getExtraProperty('payload.number') && !$activity->getExtraProperty('payload.is_resend'))
-                            <a href="{{route('sell.retrySendWhatsappNotification', [$activity->id])}}" class="btn btn-link" title="@lang('lang_v1.resend_wa_notification')"><i class="fas fa-paper-plane" aria-hidden="true"></i></a>
+                            <a href="{{route('sell.retrySendWhatsappNotification', [$activity->id])}}" class="btn btn-link" style="padding-top: 0; padding-bottom: 0;" title="@lang('lang_v1.resend_wa_notification')"><i class="fas fa-paper-plane" aria-hidden="true"></i></a>
                         @endif
                     </div>
                     <div>
