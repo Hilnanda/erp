@@ -64,6 +64,7 @@ use Stripe\Stripe;
 use Yajra\DataTables\Facades\DataTables;
 use App\Events\SellCreatedOrModified;
 use App\Http\Traits\CanPrintInvoice;
+use Spatie\Activitylog\Models\Activity;
 
 class SellPosController extends Controller
 {
@@ -3010,5 +3011,64 @@ class SellPosController extends Controller
         ];
 
         return redirect()->action([\App\Http\Controllers\SellController::class, 'index'])->with('status', $output);
+    }
+
+    /**
+     * Retry send whatsapp notification
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function retrySendWhatsappNotification(Request $request, $activity_log_id)
+    {
+        $business_id = $request->hasSession() ? $request->session()->get('user.business_id') : null;
+
+        if (!$activity = Activity::find($activity_log_id)) {
+            $output = [
+                'success' => 0,
+                'msg' => 'Log not found!',
+            ];
+            return redirect()->back()->with('status', $output);
+        }
+        
+        $transaction = Transaction::where('id', $activity->subject_id)
+            ->when($business_id, function ($query) use ($business_id) {
+                $query->where('business_id', $business_id);
+            })
+            ->with(['location'])
+            ->first();
+        
+        $payment = $transaction->payment_lines->where('id', $activity->getExtraProperty('payload.payment_id'))->first();
+
+        switch ($activity->getExtraProperty('payload.type')) {
+            case 'payment':
+                $response = $this->transactionUtil->whatsappNotifySalesPayment($transaction, $payment, $business_id, $activity->getExtraProperty('payload.number'));
+                break;
+
+            case 'due':
+                $response = $this->transactionUtil->whatsappNotifySalesDue($transaction, $activity->getExtraProperty('payload.number'));
+                break;
+            
+            default:
+                $response = $this->transactionUtil->whatsappNotifySalesCreated($transaction, $activity->getExtraProperty('payload.number'));
+                break;
+        }
+
+        $properties = $activity->properties;
+        $payload = \Arr::get($properties, 'payload');
+        $payload['is_resend'] = 1;
+        $properties['payload'] = $payload;
+        Activity::where('id', $activity_log_id)->update(['properties' => $properties]);
+
+        if (is_array($response)) {
+            $response = $response[0];
+        }
+        $message = $response?->message;
+        $output = [
+            'success' => $message == 'Message sent.' ? 1 : 0,
+            'msg' => $message ?? __('lang_v1.unknown_error'),
+        ];
+
+        return redirect()->back()->with('status', $output);
     }
 }

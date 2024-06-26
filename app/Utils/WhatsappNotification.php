@@ -17,11 +17,11 @@ trait WhatsappNotification
      * @param  Transaction  $transaction
      * @return object  $response
      */
-    public function whatsappNotifySalesCreated($transaction)
+    public function whatsappNotifySalesCreated($transaction, $number = null)
     {
         $transactionUtil = new \App\Utils\TransactionUtil;
         $customer = $transaction->contact;
-        $receiver = $customer?->mobile;
+        $receiver = $number ?? $customer?->mobile;
         $paid_amount = $transactionUtil->getTotalPaid($transaction->id);
         $total_payable = $transaction->final_total - $paid_amount;
 
@@ -61,6 +61,10 @@ trait WhatsappNotification
             $response = $this->sendWhatsappText($receiver, $message);
         }
 
+        $response->payload = [
+            'type' => 'sales-created',
+            'number' => $receiver,
+        ];
         $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
         return $response;
     }
@@ -102,6 +106,10 @@ trait WhatsappNotification
             $response = $this->sendWhatsappText($receiver, $message);
         }
 
+        $response->payload = [
+            'type' => 'purchase-created',
+            'number' => $receiver,
+        ];
         $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
         return $response;
     }
@@ -112,11 +120,11 @@ trait WhatsappNotification
      * @param  Transaction  $transaction
      * @return object  $response
      */
-    public function whatsappNotifySalesPayment($transaction, $payment, $business_id)
+    public function whatsappNotifySalesPayment($transaction, $payment, $business_id, $number = null)
     {
         $transactionUtil = new \App\Utils\TransactionUtil;
         $customer = $transaction->contact;
-        $receivers = [owner_mobile(), $customer?->mobile];
+        $receivers = $number ? [$number] : array_unique([owner_mobile(), $customer?->mobile]);
         $paid_amount = $transactionUtil->getTotalPaid($transaction->id);
         $status = $paid_amount == $transaction->final_total ? 'Lunas' : 'Sebagian';
         $payment_types = $transactionUtil->payment_types(null, false, $business_id);
@@ -138,10 +146,16 @@ trait WhatsappNotification
         foreach ($receivers as $receiver) {
             if (env('REMINDER_WITH_MEDIA', 0)) {
                 $media_url = $transactionUtil->saveInvoice(new Request(), $transaction->id);
-                array_push($responses, $this->sendWhatsappMedia($receiver, $media_url, 'file', $message));
+                $response = $this->sendWhatsappMedia($receiver, $media_url, 'file', $message);
             } else {
-                array_push($responses, $this->sendWhatsappText($receiver, $message));
+                $response = $this->sendWhatsappText($receiver, $message);
             }
+            $response->payload = [
+                'type' => 'payment',
+                'number' => $receiver,
+                'payment_id' => $payment->id,
+            ];
+            array_push($responses, $response);
         }
 
         if (!is_array($responses)) {
@@ -160,12 +174,12 @@ trait WhatsappNotification
      * @param  Transaction  $transaction
      * @return object  $response
      */
-    public function whatsappNotifySalesDue($transaction)
+    public function whatsappNotifySalesDue($transaction, $number = null)
     {
         $transactionUtil = new \App\Utils\TransactionUtil;
         $businessUtil = new \App\Utils\BusinessUtil;
         $customer = $transaction->contact;
-        $receiver = $customer?->mobile;
+        $receiver = $number ?? $customer?->mobile;
         $paid_amount = $transactionUtil->getTotalPaid($transaction->id);
         $total_payable = $transaction->final_total - $paid_amount;
         $due_date = $transaction->due_date ? $transaction->due_date : date('Y-m-d H:i:s', strtotime($transaction->transaction_date
@@ -207,6 +221,10 @@ trait WhatsappNotification
             $response = $this->sendWhatsappText($receiver, $message);
         }
 
+        $response->payload = [
+            'type' => 'due',
+            'number' => $receiver,
+        ];
         $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
         return $response;
     }

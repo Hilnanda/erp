@@ -11,6 +11,11 @@
             <td>{{@format_datetime($activity->created_at)}}</td>
             <td>
                 {{__('lang_v1.' . $activity->description)}}
+                @if($activity->description == 'whatsapp_notification' && $activity->getExtraProperty('payload.type'))
+                @if(in_array($activity->getExtraProperty('payload.type'), ['payment', 'due']))
+                ({{__('lang_v1.'.$activity->getExtraProperty('payload.type'))}})
+                @endif
+                @endif
             </td>
             <td>
                 {{$activity->causer->user_full_name ?? ''}}
@@ -57,13 +62,22 @@
                     <div>
                         <b>Status: </b>
                         <span class="label bg-{{$isSuccess ? 'light-green' : 'red'}}">
-                            {{$isSuccess ? __('lang_v1.success') : __('lang_v1.failed')}}
+                            {{ $isSuccess ? __('lang_v1.success') : __('lang_v1.failed')}}
                         </span>
+                        @if(!$isSuccess && $activity->getExtraProperty('payload.number') && !$activity->getExtraProperty('payload.is_resend'))
+                            <a href="{{route('sell.retrySendWhatsappNotification', [$activity->id])}}" class="btn btn-link" title="@lang('lang_v1.resend_wa_notification')"><i class="fas fa-paper-plane" aria-hidden="true"></i></a>
+                        @endif
                     </div>
                     <div>
                         <b>{{__('lang_v1.description')}}: </b>
                         <span class="label bg-{{$isSuccess ? 'light-green' : 'red'}}">
                             {{$activity->getExtraProperty('message')}}
+                        </span>
+                    </div>
+                    <div>
+                        <b>{{__('lang_v1.number')}}: </b>
+                        <span>
+                            {{$activity->getExtraProperty('payload.number') ?? '-'}}
                         </span>
                     </div>
                 @endif
