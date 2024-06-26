@@ -507,6 +507,9 @@ class SellController extends Controller
                     return $return_due_html;
                 })
                 ->editColumn('invoice_no', function ($row) use ($is_crm) {
+                    if ($row->status != 'final') {
+                        return '';
+                    }
                     $invoice_no = $row->invoice_no;
                     if (! empty($row->woocommerce_order_id)) {
                         $invoice_no .= ' <i class="fab fa-wordpress text-primary no-print" title="'.__('lang_v1.synced_from_woocommerce').'"></i>';
@@ -1404,6 +1407,9 @@ class SellController extends Controller
                     })
                 ->removeColumn('id')
                 ->editColumn('invoice_no', function ($row) {
+                    if ($row->status != 'final') {
+                        return null;
+                    }
                     $invoice_no = $row->invoice_no;
                     if (! empty($row->woocommerce_order_id)) {
                         $invoice_no .= ' <i class="fab fa-wordpress text-primary no-print" title="'.__('lang_v1.synced_from_woocommerce').'"></i>';
