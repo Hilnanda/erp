@@ -485,14 +485,14 @@ class AdminSidebarMenu
                                         ['icon' => 'fa fas fa-plus-circle', 'active' => request()->segment(1) == 'stock-adjustments' && request()->segment(2) == 'create']
                                     );
                                 }
-                                if (auth()->user()->can('purchase.view')) {
+                                if (auth()->user()->can('purchase.view') && env('ENABLE_SYSTEM_BASIC', true)) {
                                     $subMenus->url(
                                         action([\App\Http\Controllers\StockTransferController::class, 'index']),
                                         __('lang_v1.list_stock_transfers'),
                                         ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'stock-transfers' && request()->segment(2) == null]
                                     );
                                 }
-                                if (auth()->user()->can('purchase.create')) {
+                                if (auth()->user()->can('purchase.create') && env('ENABLE_SYSTEM_BASIC', true)) {
                                     $subMenus->url(
                                         action([\App\Http\Controllers\StockTransferController::class, 'create']),
                                         __('lang_v1.add_stock_transfer'),
