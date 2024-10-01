@@ -60,6 +60,7 @@ class TransactionPaymentController extends Controller
      */
     public function store(Request $request)
     {
+        $isSuccess = false;
         try {
             $business_id = $request->session()->get('user.business_id');
             $transaction_id = $request->input('transaction_id');
@@ -125,7 +126,6 @@ class TransactionPaymentController extends Controller
 
                     $inputs['transaction_type'] = $transaction->type;
                     event(new TransactionPaymentAdded($tp, $inputs));
-                    event(new \App\Events\SalesOrderPayment($transaction, $tp, $business_id));
                 }
 
                 //update payment status
@@ -136,6 +136,8 @@ class TransactionPaymentController extends Controller
 
                 DB::commit();
             }
+
+            $isSuccess = false;
 
             $output = ['success' => true,
                 'msg' => __('purchase.payment_added_success'),
@@ -153,6 +155,12 @@ class TransactionPaymentController extends Controller
             $output = ['success' => false,
                 'msg' => $msg,
             ];
+
+            $isSuccess = false;
+        }
+
+        if ($isSuccess) {
+            event(new \App\Events\SalesOrderPayment($transaction, $tp, $business_id));
         }
 
         return redirect()->back()->with(['status' => $output]);
