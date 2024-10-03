@@ -137,7 +137,7 @@ class TransactionPaymentController extends Controller
                 DB::commit();
             }
 
-            $isSuccess = false;
+            $isSuccess = true;
 
             $output = ['success' => true,
                 'msg' => __('purchase.payment_added_success'),
