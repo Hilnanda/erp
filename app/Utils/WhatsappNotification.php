@@ -61,10 +61,14 @@ trait WhatsappNotification
             $response = $this->sendWhatsappText($receiver, $message);
         }
 
-        $response->payload = [
-            'type' => 'sales-created',
-            'number' => $receiver,
-        ];
+        try {
+            $response->payload = [
+                'type' => 'sales-created',
+                'number' => $receiver,
+            ];
+        } catch (\Throwable $th) {
+        }
+        
         $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
         return $response;
     }
@@ -106,10 +110,14 @@ trait WhatsappNotification
             $response = $this->sendWhatsappText($receiver, $message);
         }
 
-        $response->payload = [
-            'type' => 'purchase-created',
-            'number' => $receiver,
-        ];
+        try {
+            $response->payload = [
+                'type' => 'purchase-created',
+                'number' => $receiver,
+            ];
+        } catch (\Throwable $th) {
+        }
+        
         $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
         return $response;
     }
@@ -150,11 +158,15 @@ trait WhatsappNotification
             } else {
                 $response = $this->sendWhatsappText($receiver, $message);
             }
-            $response->payload = [
-                'type' => 'payment',
-                'number' => $receiver,
-                'payment_id' => $payment->id,
-            ];
+            try {
+                $response->payload = [
+                    'type' => 'payment',
+                    'number' => $receiver,
+                    'payment_id' => $payment->id,
+                ];
+            } catch (\Throwable $th) {
+            }
+            
             array_push($responses, $response);
         }
 
@@ -221,10 +233,14 @@ trait WhatsappNotification
             $response = $this->sendWhatsappText($receiver, $message);
         }
 
-        $response->payload = [
-            'type' => 'due',
-            'number' => $receiver,
-        ];
+        try {
+            $response->payload = [
+                'type' => 'due',
+                'number' => $receiver,
+            ];
+        } catch (\Throwable $th) {
+        }
+        
         $transactionUtil->activityLog($transaction, 'whatsapp_notification', null, $response);
         return $response;
     }
