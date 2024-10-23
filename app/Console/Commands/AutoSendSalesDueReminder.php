@@ -52,7 +52,7 @@ class AutoSendSalesDueReminder extends Command
             $due_in_days = (int) env('REMINDER_DUE_DAY', 3);
             $count = 0;
             foreach ($businesses as $business) {
-                $reminderDate = now($business->time_zone)->addDays($due_in_days);
+                $reminderDate = now($business->time_zone)->startOfDay()->addDays($due_in_days);
 
                 $salesList = Transaction::where('business_id', $business->id)
                     ->where('type', 'sell')
@@ -65,7 +65,7 @@ class AutoSendSalesDueReminder extends Command
 
                 foreach ($salesList as $sales) {
                     $dueDate = Carbon::parse($sales->due_date);
-                    if (!($dueDate->diffInDays($reminderDate) % $due_in_days)) {
+                    if (!!($dueDate->diffInDays($reminderDate) % $due_in_days)) {
                         continue;
                     }
                     event(new \App\Events\SalesOrderDue($sales));
