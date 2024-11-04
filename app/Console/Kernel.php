@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
                     ->emailOutputTo($email);
         }
 
-        $schedule->command('simetris:autoSendSalesDueReminder')->dailyAt('00:00')->timezone('UTC');
+        $schedule->command('simetris:autoSendSalesDueReminder')->everyMinute();
     }
 
     /**
