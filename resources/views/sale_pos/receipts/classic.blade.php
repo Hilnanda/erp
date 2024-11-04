@@ -416,15 +416,30 @@ $col_size = $is_download ? 'col' : 'col-xs';
 	<div class="col-md-12"><hr/></div>
 	<div class="{{$col_size}}-6">
 		<table class="table table-slim">
-			<tr>
+			{{-- <tr>
 				<td>BCA : 316-034-5470 <br>
 					a/n. Ayu Nani Hartiana <br>
 					Mandiri : 141-00-2283-1812 <br>
 					a/n. Ayu Nani Hartiana</td>
-			</tr>
+			</tr> --}}
+			@php
+				$rekening_pt_mac = 'PT MEGA ASIA COSMETINDO <br> Mandiri : 144-00-2571090-3 <br>';
+				$rekening_ayu_nani = 'BCA : 316-034-5470 <br> a/n. Ayu Nani Hartiana <br> Mandiri : 141-00-2283-1812 <br> a/n. Ayu Nani Hartiana';
+			@endphp
 			@if(!empty($receipt_details->payments))
 			
 				@foreach($receipt_details->payments as $payment)
+				@if (strtolower('Rekening PT MAC') == strtolower($payment['method']))
+				<tr>
+					<td>{!! $rekening_pt_mac !!}
+					</td>
+				</tr>
+				@else
+				<tr>
+					<td>{!! $rekening_ayu_nani !!}</td>
+				</tr>
+				@endif
+
 				{{-- @php
 					$nama_bank = explode(",",env('NAMA_BANK'));
 					$no_rek = explode(",",env('NO_REK'));
@@ -462,6 +477,10 @@ $col_size = $is_download ? 'col' : 'col-xs';
 						<td class="text-right">{{$payment['date']}}</td>
 					</tr>
 				@endforeach
+			@else
+			<tr>
+				<td>{!! $rekening_ayu_nani !!}</td>
+			</tr>
 			@endif
 
 			<!-- Total Paid-->
