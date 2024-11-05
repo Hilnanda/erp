@@ -81,7 +81,7 @@ class AutoSendSalesDueReminder extends Command
                     continue;
                 }
 
-                if ($jobQueue->next_schedule_at > now($business->id)) {
+                if (\Carbon::parse($jobQueue->next_schedule_at . ' ' . $business->time_zone) > now($business->time_zone)) {
                     continue;
                 }
 
