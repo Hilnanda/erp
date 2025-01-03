@@ -39,10 +39,6 @@ trait WhatsappNotification
             }
         }
 
-        $message = $message
-            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true)
-            . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true);
-
         if ($transaction->shipping_charges) {
             $message = $message
                 . $this->newLine . 'Biaya Pengiriman : ' . $transactionUtil->num_f($transaction->shipping_charges, true) . ($transaction->shipping_details ? ' ~ ' . $transaction->shipping_details : '');
@@ -70,6 +66,8 @@ trait WhatsappNotification
         }
 
         $message = $message
+            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true)
+            . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true)
             . $this->newLine . 'Jatuh Tempo : ' . $transactionUtil->format_date($transaction->due_date, true)
             . $this->newLine
             . $this->newLine . 'Anda dapat melakukan pembayaran melalui transfer ke rekening di bawah sebelum ' . $transactionUtil->format_date($transaction->due_date, true)
@@ -238,12 +236,7 @@ trait WhatsappNotification
             }
         }
 
-        $message = $message
-            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true, $business_details)
-            . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true, $business_details);
-
         if ($transaction->shipping_charges) {
-            $total_payable += $transaction->shipping_charges;
             $message = $message
                 . $this->newLine . 'Biaya Pengiriman : ' . $transactionUtil->num_f($transaction->shipping_charges, true) . ($transaction->shipping_details ? ' ~ ' . $transaction->shipping_details : '');
         }
@@ -264,13 +257,14 @@ trait WhatsappNotification
         if (count($additionalExpenses)) {
             $message = $message . $this->newLine . 'Biaya Tambahan :';
             foreach ($additionalExpenses as $additionalExpense) {
-                $total_payable += \Arr::get($additionalExpense, 'value');
                 $message = $message
                     . $this->newLine . '- ' . $transactionUtil->num_f(\Arr::get($additionalExpense, 'value'), true) . (\Arr::get($additionalExpense, 'name') ? ' ~ ' . \Arr::get($additionalExpense, 'name') : '');
             }
         }
-        
+
         $message = $message
+            . $this->newLine . 'Total Transaksi : ' . $transactionUtil->num_f($transaction->final_total, true, $business_details)
+            . $this->newLine . 'Total Paid : ' . $transactionUtil->num_f($paid_amount, true, $business_details)
             . $this->newLine . 'Belum Terbayar : ' . $transactionUtil->num_f($total_payable, true, $business_details)
             . $this->newLine
             . $this->newLine . 'Jatuh tempo pada tanggal ' . $transactionUtil->format_date($due_date, true, $business_details)
