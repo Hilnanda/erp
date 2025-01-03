@@ -110,6 +110,9 @@ trait LSenderAddon
      */
     public function formatNumber($number)
     {
+        if (is_staging()) {
+            return owner_mobile();
+        }
         $number = preg_replace('/^(0|\+62)/', '62', $number);
         $number = preg_replace('/[^0-9]*/', '', $number);
         return $number;

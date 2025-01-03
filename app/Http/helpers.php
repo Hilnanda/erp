@@ -115,3 +115,10 @@ if (! function_exists('get_public_path')) {
         return isset($_SERVER['PWD']) && $_SERVER['PWD'] ? $_SERVER['PWD'] . '/public' : $_SERVER['DOCUMENT_ROOT'];
     }
 }
+
+if (! function_exists('is_staging')) {
+    function is_staging()
+    {
+        return config('app.is_staging');
+    }
+}

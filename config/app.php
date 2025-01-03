@@ -228,4 +228,6 @@ return [
         'Pesapal' => Knox\Pesapal\Facades\Pesapal::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
+
+    'is_staging' => env('IS_STAGING', 0),
 ];
